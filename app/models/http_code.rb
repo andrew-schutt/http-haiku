@@ -1,0 +1,2 @@
+class HttpCode < ApplicationRecord
+end
