@@ -1,7 +1,9 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+HttpStatusCodeConstants::CODES.each do |code|
+  http_code = HttpStatusCode.new(
+    code: code,
+    description: 'test value',
+    name: "#{code} code",
+    category: "#{code[0]}xx"
+  )
+  http_code.save!
+end

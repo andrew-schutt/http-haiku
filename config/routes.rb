@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
-  resources :http_codes
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root 'http_status_codes#index'
+  resources :http_status_codes, only: [:show, :index]
 end

@@ -1,2 +1,0 @@
-class HttpCodesController < ApplicationController
-end

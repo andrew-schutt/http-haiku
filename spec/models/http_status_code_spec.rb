@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe HttpCode, type: :model do
+RSpec.describe HttpStatusCode, type: :model do
 
   subject {
     described_class.new(
