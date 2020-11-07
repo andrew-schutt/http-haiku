@@ -2,6 +2,6 @@
 <p>Find me in app/views/http_status_codes/index.html.erb</p>
 <ul>
   <% @http_status_codes.each do |http_status| %>
-    <li><%= http_status.code %></li>
+    <li><%= link_to http_status.code, http_status %></li>
   <% end %>
 </ul>

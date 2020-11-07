@@ -4,5 +4,6 @@ class HttpStatusCodesController < ApplicationController
   end
 
   def show
+    @http_status_code = HttpStatusCode.find(params[:id])
   end
 end

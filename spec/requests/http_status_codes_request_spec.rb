@@ -17,8 +17,14 @@ RSpec.describe HttpStatusCode, type: :request do
 
   context "#show" do
     it "responds successfully" do
-      get http_status_code_path
+      get http_status_code_path(HttpStatusCode.first)
       expect(response).to be_successful
+    end
+
+    it "displays the http code" do
+      http_status_code_record = HttpStatusCode.first
+      get http_status_code_path(http_status_code_record)
+      expect(response.body).to include(http_status_code_record.code.to_s)
     end
   end
 end
