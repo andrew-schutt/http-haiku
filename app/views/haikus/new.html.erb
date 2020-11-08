@@ -1,0 +1,16 @@
+<h1>Write a haiku for <%= link_to @http_status_code.name, @http_status_code %></h1>
+<%= form_with(model: [@http_status_code, @haiku], local: true) do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+
+  <%= f.label :line1 %>
+  <%= f.text_field :line1 %>
+
+  <%= f.label :line2 %>
+  <%= f.text_field :line2 %>
+
+  <%= f.label :line3 %>
+  <%= f.text_field :line3 %>
+
+  <%= f.submit %>
+<% end %>

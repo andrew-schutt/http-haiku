@@ -1,0 +1,11 @@
+<h1>Haikus for <%= link_to @http_status_code.name, http_status_code_path(@http_status_code) %></h1>
+<ul>
+  <% @haikus.each do |haiku| %>
+  <li>
+    <%= haiku.title %>
+    <%= haiku.line1 %>
+    <%= haiku.line2 %>
+    <%= haiku.line3 %>
+  </li>
+  <% end %>
+</ul>

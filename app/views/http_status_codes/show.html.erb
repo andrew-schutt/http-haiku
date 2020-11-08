@@ -1,3 +1,11 @@
-<%= @http_status_code.code %>
+<section class="http-status-code-details">
+  <div>
+    <h1><%= @http_status_code.code %></h1>
+  </div>
 
-<%= link_to "Write a http haiku", %>
+  <aside>
+    <h4>More Haikus</h4>
+    <%= link_to "Write a http haiku", new_http_status_code_haiku_path(@http_status_code) %>
+    <%= link_to "Read all of the http haikus for #{@http_status_code.code}", http_status_code_haikus_path(@http_status_code) %>
+  </aside>
+</section>
