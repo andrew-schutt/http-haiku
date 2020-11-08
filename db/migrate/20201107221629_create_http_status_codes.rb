@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateHttpStatusCodes < ActiveRecord::Migration[6.0]
   def change
     create_table :http_status_codes do |t|

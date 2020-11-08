@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HttpStatusCodesController < ApplicationController
   def index
     @http_status_codes = HttpStatusCode.all

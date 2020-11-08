@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 HttpStatusCodeConstants::CODES.each do |code|
   http_code = HttpStatusCode.new(
     code: code,
