@@ -1,0 +1,114 @@
+// Colors
+
+$black: #393939;
+$off-white: #EDEDED;
+$dark-gray: #666;
+$medium-gray: #6c757d;
+$light-gray: #c2c2c2;
+$blue: #237CBE;
+$light-blue: lighten($blue, 40%);
+$orange: #E8890C;
+$yellow: #ffc107;
+$light-yellow: #FFC;
+$red: #dc3545;
+
+// Custom Variables
+
+$secondary-text-color: $medium-gray;
+$accent-color: $orange;
+$secondary-link-color: $medium-gray;
+$border-color: $light-gray;
+$error-color: $red;
+$error-background-color: $light-yellow;
+$sold-out-color: $yellow;
+$box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .09);
+
+// Bootstrap Variable Overrides
+
+$body-color: $black;
+$body-bg: $off-white;
+$primary: $light-gray;
+$secondary: $medium-gray;
+
+// Import Bootstrap Styles
+
+@import "bootstrap";
+
+header {
+  background-color: $black;
+  padding: 0.5rem;
+  margin-bottom: 3rem;
+
+  nav {
+    @extend .navbar,
+    .navbar-expand-md;
+
+    img {
+      height: 50px;
+      margin-right: 0.5rem;
+    }
+
+    a {
+      color: $secondary-link-color;
+    }
+
+    a.button {
+      @extend .btn,
+      .btn-outline-secondary;
+    }
+
+    ul {
+      @extend .nav,
+      .navbar-nav;
+      letter-spacing: 1px;
+
+      &.left {
+        @extend .mr-auto;
+      }
+
+      &.right {
+        @extend .ml-auto;
+      }
+
+      li {
+        @extend .nav-item;
+        font-size: 1.1rem;
+        margin-right: 5px;
+
+        a {
+          @extend .nav-link;
+          padding-bottom: 1px;
+        }
+
+        a:hover:not(.button),
+        a.active {
+          color: $off-white;
+          border-bottom: 1px solid $off-white;
+        }
+
+        .button {
+          margin-right: 10px;
+          color: $off-white;
+          border-color: $off-white;
+        }
+
+        .button:hover {
+          background: $off-white;
+          color: $primary;
+          border-color: $primary;
+        }
+      }
+    }
+  }
+}
+
+// Footer
+
+footer {
+  background: $black;
+  color: $light-gray;
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}

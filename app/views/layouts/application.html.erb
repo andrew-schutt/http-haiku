@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>HttpHaiku</title>
+    <title>Http Haiku</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,6 +10,12 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render "layouts/header" %>
+
+    <div class="content">
+      <%= yield %>
+    </div>
+
+    <%= render "layouts/footer" %>
   </body>
 </html>
