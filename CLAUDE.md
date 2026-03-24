@@ -69,6 +69,19 @@ TypeScript is configured with `verbatimModuleSyntax`, so all type-only imports m
 - To simulate a new browser session in a request spec: `cookies.delete("_http_haiku_session")`
 - Factories use `sequence(:code)` starting at 201 for `http_code` to avoid uniqueness collisions
 
+## Rails conventions
+
+- Follow the Rails convention of "fat model, skinny controller" — business logic belongs in models or service objects, not controllers
+- Use Rails' built-in ActiveRecord query interface; never write raw SQL unless absolutely necessary (use `.where`, `.find_by`, `.exists?`, etc.)
+- Prefer declarative validations in models (`validates :field, presence: true`) over manual checks in controllers
+- Use `before_action` callbacks for shared setup (e.g., `set_haiku`) and `rescue_from` in ApplicationController for shared error handling
+- Prefer symbols for HTTP status codes in `render` calls (`:ok`, `:created`, `:unprocessable_entity`) — never use raw integers
+- Use `respond_to` blocks only when needed; for API-only controllers, `render json:` is fine directly
+- Scope ActiveRecord queries with named scopes on the model rather than inline `.where` chains in controllers
+- Avoid `update_attribute` (skips validations); use `update` or `update!` instead
+- Use `find` (raises) vs `find_by` (returns nil) intentionally — prefer `find` when the record must exist
+- Keep callbacks (`before_save`, `after_create`, etc.) minimal and side-effect-free; prefer explicit service calls for complex logic
+
 ## Key constraints
 
 - `NEVER modify the Gemfile, Rails configuration or initializers, nor RSpec configuration or test support files.`

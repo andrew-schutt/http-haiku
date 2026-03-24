@@ -43,3 +43,9 @@ backend/config/credentials/*.key
 
 # Docker
 .dockerignore
+
+# Coverage reports
+**/coverage/
+
+# Claude Code internal
+.claude/
