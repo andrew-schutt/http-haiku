@@ -8,7 +8,7 @@ RSpec.describe "Api::V1::Haikus", type: :request do
       {
         haiku: {
           http_code: 404,
-          content: "Line one here\nLine two follows\nLine three ends",
+          content: "An old silent pond\nA frog jumps into the pond\nSplash silence again",
           author_name: "Test Author"
         }
       }
@@ -44,6 +44,18 @@ RSpec.describe "Api::V1::Haikus", type: :request do
       expect(json["errors"]).to include("Content must have exactly 3 lines")
     end
 
+    it "returns error when syllable counts do not follow 5-7-5" do
+      # Line 1: "An old silent frozen pond" = 7 syllables (expected 5)
+      valid_params[:haiku][:content] = "An old silent frozen pond\nA frog jumps into the pond\nSplash silence again"
+
+      post "/api/v1/haikus", params: valid_params, as: :json
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = JSON.parse(response.body)
+      expect(json["errors"].first).to include("5-7-5")
+      expect(json["errors"].first).to include("line 1")
+    end
+
     it "returns error for non-existent HTTP code" do
       valid_params[:haiku][:http_code] = 999
 
@@ -54,7 +66,7 @@ RSpec.describe "Api::V1::Haikus", type: :request do
   end
 
   describe "POST /api/v1/haikus/:id/vote" do
-    let!(:haiku) { http_code.haikus.create!(content: "A\nB\nC") }
+    let!(:haiku) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again") }
 
     it "increments vote count" do
       expect {

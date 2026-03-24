@@ -53,17 +53,17 @@ RSpec.describe HttpCode, type: :model do
     end
 
     it "returns the haiku with the highest vote count" do
-      haiku1 = http_code.haikus.create!(content: "Line 1\nLine 2\nLine 3", vote_count: 5)
-      haiku2 = http_code.haikus.create!(content: "Line A\nLine B\nLine C", vote_count: 10)
-      haiku3 = http_code.haikus.create!(content: "Line X\nLine Y\nLine Z", vote_count: 3)
+      haiku1 = http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5)
+      haiku2 = http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 10)
+      haiku3 = http_code.haikus.create!(content: "Old moon in winter\nStars reflect in a still pond\nCold and far from dawn", vote_count: 3)
 
       expect(http_code.top_haiku).to eq(haiku2)
     end
 
     it "returns the oldest haiku when vote counts are equal" do
-      haiku1 = http_code.haikus.create!(content: "First\nSecond\nThird", vote_count: 5)
+      haiku1 = http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5)
       sleep 0.01
-      haiku2 = http_code.haikus.create!(content: "Line A\nLine B\nLine C", vote_count: 5)
+      haiku2 = http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 5)
 
       expect(http_code.top_haiku).to eq(haiku1)
     end

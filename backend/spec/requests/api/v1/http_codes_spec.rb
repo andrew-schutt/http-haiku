@@ -13,14 +13,14 @@ RSpec.describe "Api::V1::HttpCodes", type: :request do
     end
 
     it "includes top haiku for each code" do
-      haiku = http_code1.haikus.create!(content: "Line 1\nLine 2\nLine 3", vote_count: 5)
+      haiku = http_code1.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5)
 
       get "/api/v1/http_codes"
       json = JSON.parse(response.body)
       code_200 = json["http_codes"].find { |c| c["code"] == 200 }
 
       expect(code_200["top_haiku"]).to be_present
-      expect(code_200["top_haiku"]["content"]).to eq("Line 1\nLine 2\nLine 3")
+      expect(code_200["top_haiku"]["content"]).to eq("An old silent pond\nA frog jumps into the pond\nSplash silence again")
     end
 
     it "returns null for top_haiku when no haikus exist" do
@@ -34,8 +34,8 @@ RSpec.describe "Api::V1::HttpCodes", type: :request do
 
   describe "GET /api/v1/http_codes/:code" do
     let!(:http_code) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }
-    let!(:haiku1) { http_code.haikus.create!(content: "A\nB\nC", vote_count: 10) }
-    let!(:haiku2) { http_code.haikus.create!(content: "X\nY\nZ", vote_count: 5) }
+    let!(:haiku1) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 10) }
+    let!(:haiku2) { http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 5) }
 
     it "returns the HTTP code with haikus" do
       get "/api/v1/http_codes/404"
@@ -58,7 +58,7 @@ RSpec.describe "Api::V1::HttpCodes", type: :request do
 
     it "limits to 20 haikus" do
       25.times do |i|
-        http_code.haikus.create!(content: "L1\nL2\nL3", vote_count: i)
+        http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: i)
       end
 
       get "/api/v1/http_codes/404"
