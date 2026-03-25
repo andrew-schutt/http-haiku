@@ -13,6 +13,7 @@ HTTP Haiku is a monorepo with a Rails 8 JSON API backend and a React + TypeScrip
 ```bash
 bundle exec rspec                          # run all tests
 bundle exec rspec spec/models/haiku_spec.rb  # run a single spec file
+bundle exec rspec spec/services/haiku_check_spec.rb  # run a single spec file
 bin/rails db:create db:migrate db:seed    # first-time setup
 bin/rails db:migrate                      # run pending migrations
 bin/rails server                          # start API on http://localhost:3000
@@ -25,6 +26,7 @@ bin/rails console
 npm run dev      # start dev server on http://localhost:5173
 npm run build    # type-check + production build
 npm run lint     # ESLint
+npm run test     # Vitest with coverage
 ```
 
 ### Start Postgres (macOS)
@@ -52,6 +54,8 @@ config.middleware.use ActionDispatch::Session::CookieStore, key: "_http_haiku_se
 
 **CORS**: Configured in `config/initializers/cors.rb` to allow `localhost:5173` with `credentials: true` (required for session cookies to work cross-origin).
 
+**Services**: `app/services/haiku_check.rb` validates 5-7-5 syllable structure. Called from the `must_follow_syllable_structure` validation on `Haiku`. Interface: `HaikuCheck.new(content).valid?` / `.error_message`.
+
 ### Frontend
 
 React + TypeScript with Vite. `src/lib/api.ts` is the single Axios client — all API calls go through it. React Query (TanStack Query) manages server state with a 5-minute stale time.
@@ -64,7 +68,7 @@ TypeScript is configured with `verbatimModuleSyntax`, so all type-only imports m
 
 ### Testing
 
-- Request specs test all 4 endpoints; models specs cover validations and associations
+- Request specs test all 4 endpoints; models specs cover validations and associations; services spec covers HaikuCheck syllable validation
 - `ActiveRecord::RecordNotFound` is caught by Rails middleware in request specs — test with `have_http_status(:not_found)`, not `raise_error`
 - To simulate a new browser session in a request spec: `cookies.delete("_http_haiku_session")`
 - Factories use `sequence(:code)` starting at 201 for `http_code` to avoid uniqueness collisions

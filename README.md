@@ -4,7 +4,7 @@ A web application where users can submit and vote on haikus written for specific
 
 ## Features
 
-- 📝 Submit haikus for any HTTP status code (must be exactly 3 lines)
+- 📝 Submit haikus for any HTTP status code (must follow 5-7-5 syllable structure)
 - ❤️ Vote on your favorite haikus (once per session)
 - 🎯 View top 20 haikus for each status code
 - 🔍 Browse all HTTP codes grouped by category
@@ -19,7 +19,7 @@ A web application where users can submit and vote on haikus written for specific
 - Session-based voting (no authentication required)
 
 ### Frontend
-- **React 18** with TypeScript
+- **React 19** with TypeScript
 - **Vite** build tool
 - **React Router** for navigation
 - **React Query** for API state management
@@ -36,7 +36,8 @@ http-haiku/
 ├── backend/           # Rails 8 API
 │   ├── app/
 │   │   ├── controllers/api/v1/
-│   │   └── models/
+│   │   ├── models/
+│   │   └── services/
 │   ├── config/
 │   ├── db/
 │   └── spec/
@@ -148,17 +149,17 @@ curl -X POST http://localhost:3000/api/v1/haikus/1/vote \
 ### http_codes
 - `code` (integer, unique) - HTTP status code
 - `description` (text) - Status description
-- `category` (string) - Category (informational, success, redirection, client_error, server_error)
+- `category` (text) - Category (informational, success, redirection, client_error, server_error)
 
 ### haikus
 - `http_code_id` (foreign key)
 - `content` (text, max 200 chars) - Must be exactly 3 lines
-- `author_name` (string, optional) - Display name or "Anonymous"
+- `author_name` (text, optional) - Display name or "Anonymous"
 - `vote_count` (integer, default 0) - Cached vote total
 
 ### votes
 - `haiku_id` (foreign key)
-- `session_id` (string) - Rails session ID for duplicate prevention
+- `session_id` (text) - Voter token (UUID) for duplicate prevention
 - `ip_address` (inet) - Additional spam prevention
 - Unique constraint on (haiku_id, session_id)
 
@@ -229,7 +230,7 @@ fly ssh console  # open a shell on the running instance
 1. **Anonymous voting**: No user accounts required (MVP approach)
 2. **Session-based tracking**: Prevents duplicate votes without authentication
 3. **Seeded HTTP codes**: All standard codes (100-599) pre-populated
-4. **3-line validation**: Enforced on both frontend and backend
+4. **5-7-5 syllable validation**: Enforced on both frontend and backend
 5. **Counter cache**: Optimized vote counting with `counter_cache`
 6. **Monorepo structure**: Single repository for easier development
 
