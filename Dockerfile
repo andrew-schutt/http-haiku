@@ -17,7 +17,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Build Rails backend with frontend assets
-FROM ruby:3.3-slim
+FROM ruby:3.4-slim
 
 # Install dependencies
 RUN apt-get update -qq && \
@@ -58,8 +58,6 @@ RUN echo '#!/bin/bash\n\
 set -e\n\
 echo "Running database migrations..."\n\
 bundle exec rails db:migrate 2>/dev/null || echo "Migrations skipped"\n\
-echo "Seeding database..."\n\
-bundle exec rails db:seed 2>/dev/null || echo "Seed skipped"\n\
 echo "Starting Rails server..."\n\
 bundle exec rails server -b 0.0.0.0' > /app/docker-entrypoint.sh && \
     chmod +x /app/docker-entrypoint.sh

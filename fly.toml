@@ -1,0 +1,37 @@
+# Fly.io configuration for HTTP Haiku
+# Run `fly launch` on first deploy to register the app, then `fly deploy` for updates.
+# See scripts/setup-fly.sh for the full first-time setup procedure.
+
+app = 'http-haiku'
+primary_region = 'ord'
+
+[build]
+
+[deploy]
+  release_command = 'bundle exec rails db:migrate'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+  [http_service.concurrency]
+    type = 'requests'
+    hard_limit = 25
+    soft_limit = 20
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[env]
+  RAILS_ENV = 'production'
+  RAILS_LOG_TO_STDOUT = 'true'
+  RAILS_SERVE_STATIC_FILES = 'true'
+  SOLID_QUEUE_IN_PUMA = 'true'
+  RAILS_MAX_THREADS = '2'
+  WEB_CONCURRENCY = '1'
