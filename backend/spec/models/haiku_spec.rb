@@ -2,40 +2,41 @@ require 'rails_helper'
 
 RSpec.describe Haiku, type: :model do
   let(:http_code) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }
+  let(:user) { FactoryBot.create(:user) }
   # Canonical valid haiku used throughout: 5-7-5
   let(:valid_content) { "An old silent pond\nA frog jumps into the pond\nSplash silence again" }
 
   describe "validations" do
     it "is valid with valid attributes" do
-      haiku = Haiku.new(http_code: http_code, content: valid_content)
+      haiku = Haiku.new(http_code: http_code, user: user, content: valid_content)
       expect(haiku).to be_valid
     end
 
     it "requires content" do
-      haiku = Haiku.new(http_code: http_code, content: nil)
+      haiku = Haiku.new(http_code: http_code, user: user, content: nil)
       expect(haiku).not_to be_valid
       expect(haiku.errors[:content]).to include("can't be blank")
     end
 
     it "requires exactly 3 lines" do
-      haiku = Haiku.new(http_code: http_code, content: "Only one line")
+      haiku = Haiku.new(http_code: http_code, user: user, content: "Only one line")
       expect(haiku).not_to be_valid
       expect(haiku.errors[:content]).to include("must have exactly 3 lines")
     end
 
     it "accepts a valid 5-7-5 haiku" do
-      haiku = Haiku.new(http_code: http_code, content: valid_content)
+      haiku = Haiku.new(http_code: http_code, user: user, content: valid_content)
       expect(haiku).to be_valid
     end
 
     it "rejects content with only 2 lines" do
-      haiku = Haiku.new(http_code: http_code, content: "Line one\nLine two")
+      haiku = Haiku.new(http_code: http_code, user: user, content: "Line one\nLine two")
       expect(haiku).not_to be_valid
     end
 
     it "enforces maximum length of 200 characters" do
       long_content = "A" * 70 + "\n" + "B" * 70 + "\n" + "C" * 70
-      haiku = Haiku.new(http_code: http_code, content: long_content)
+      haiku = Haiku.new(http_code: http_code, user: user, content: long_content)
       expect(haiku).not_to be_valid
     end
 
@@ -43,7 +44,7 @@ RSpec.describe Haiku, type: :model do
       it "rejects a haiku with the wrong syllable count and reports the line" do
         # Line 1: "An old silent frozen pond" = An(1)+old(1)+si·lent(2)+fro·zen(2)+pond(1) = 7, not 5
         content = "An old silent frozen pond\nA frog jumps into the pond\nSplash silence again"
-        haiku = Haiku.new(http_code: http_code, content: content)
+        haiku = Haiku.new(http_code: http_code, user: user, content: content)
 
         expect(haiku).not_to be_valid
         expect(haiku.errors[:content].first).to include("5-7-5")
@@ -53,7 +54,7 @@ RSpec.describe Haiku, type: :model do
       end
 
       it "does not run syllable validation when line count is wrong" do
-        haiku = Haiku.new(http_code: http_code, content: "Only one line")
+        haiku = Haiku.new(http_code: http_code, user: user, content: "Only one line")
         haiku.valid?
 
         expect(haiku.errors[:content]).to include("must have exactly 3 lines")
@@ -64,26 +65,35 @@ RSpec.describe Haiku, type: :model do
 
   describe "associations" do
     it "belongs to http_code" do
-      haiku = Haiku.new(content: valid_content)
+      haiku = Haiku.new(content: valid_content, user: user)
       expect(haiku.http_code).to be_nil
       haiku.http_code = http_code
       expect(haiku.http_code).to eq(http_code)
     end
 
+    it "belongs to user" do
+      haiku = Haiku.new(content: valid_content, http_code: http_code)
+      expect(haiku.user).to be_nil
+      haiku.user = user
+      expect(haiku.user).to eq(user)
+    end
+
     it "has many votes" do
-      haiku = Haiku.create!(http_code: http_code, content: valid_content)
+      haiku = Haiku.create!(http_code: http_code, user: user, content: valid_content)
       expect(haiku.votes).to be_empty
     end
   end
 
-  describe "default values" do
-    it "defaults author_name to Anonymous" do
-      haiku = Haiku.create!(http_code: http_code, content: valid_content, author_name: nil)
-      expect(haiku.author_name).to be_nil
+  describe "author_name" do
+    it "sets author_name from user.username" do
+      haiku = Haiku.create!(http_code: http_code, user: user, content: valid_content)
+      expect(haiku.author_name).to eq(user.username)
     end
+  end
 
+  describe "default values" do
     it "defaults vote_count to 0" do
-      haiku = Haiku.create!(http_code: http_code, content: valid_content)
+      haiku = Haiku.create!(http_code: http_code, user: user, content: valid_content)
       expect(haiku.vote_count).to eq(0)
     end
   end

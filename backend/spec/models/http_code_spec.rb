@@ -47,23 +47,24 @@ RSpec.describe HttpCode, type: :model do
 
   describe "#top_haiku" do
     let(:http_code) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }
+    let(:user) { FactoryBot.create(:user) }
 
     it "returns nil when there are no haikus" do
       expect(http_code.top_haiku).to be_nil
     end
 
     it "returns the haiku with the highest vote count" do
-      haiku1 = http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5)
-      haiku2 = http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 10)
-      haiku3 = http_code.haikus.create!(content: "Old moon in winter\nStars reflect in a still pond\nCold and far from dawn", vote_count: 3)
+      haiku1 = http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5, user: user)
+      haiku2 = http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 10, user: user)
+      haiku3 = http_code.haikus.create!(content: "Old moon in winter\nStars reflect in a still pond\nCold and far from dawn", vote_count: 3, user: user)
 
       expect(http_code.top_haiku).to eq(haiku2)
     end
 
     it "returns the oldest haiku when vote counts are equal" do
-      haiku1 = http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5)
+      haiku1 = http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5, user: user)
       sleep 0.01
-      haiku2 = http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 5)
+      haiku2 = http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 5, user: user)
 
       expect(http_code.top_haiku).to eq(haiku1)
     end

@@ -9,6 +9,8 @@ A web application where users can submit and vote on haikus written for specific
 - 🎯 View top 20 haikus for each status code
 - 🔍 Browse all HTTP codes grouped by category
 - 🎨 Clean, modern UI with responsive design
+- 📣 Unobtrusive developer-targeted ads via Carbon Ads
+- ☕ Optional Ko-fi donation support
 
 ## Technology Stack
 
@@ -245,6 +247,8 @@ fly ssh console  # open a shell on the running instance
 - [ ] Dark mode theme
 - [ ] API rate limiting
 - [ ] Haiku collections/favorites
+- [ ] Carbon Ads integration (developer-targeted, privacy-respecting)
+- [ ] Ko-fi donation link in footer
 
 ## Contributing
 

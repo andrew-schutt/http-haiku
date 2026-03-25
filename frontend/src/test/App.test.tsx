@@ -29,6 +29,12 @@ const server = setupServer(
         haikus: [],
       },
     });
+  }),
+  http.get("http://localhost:3000/api/v1/users/me", () => {
+    return HttpResponse.json({ error: "Authentication required" }, { status: 401 });
+  }),
+  http.get("http://localhost:3000/api/v1/haikus/daily", () => {
+    return HttpResponse.json({ error: "No haikus yet" }, { status: 404 });
   })
 );
 

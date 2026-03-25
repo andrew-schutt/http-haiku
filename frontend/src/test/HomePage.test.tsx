@@ -52,6 +52,12 @@ const mockHttpCodes: HttpCode[] = [
 const server = setupServer(
   http.get("http://localhost:3000/api/v1/http_codes", () => {
     return HttpResponse.json({ http_codes: mockHttpCodes });
+  }),
+  http.get("http://localhost:3000/api/v1/users/me", () => {
+    return HttpResponse.json({ error: "Authentication required" }, { status: 401 });
+  }),
+  http.get("http://localhost:3000/api/v1/haikus/daily", () => {
+    return HttpResponse.json({ error: "No haikus yet" }, { status: 404 });
   })
 );
 
@@ -128,6 +134,30 @@ describe("HomePage", () => {
         screen.getByText("Failed to load HTTP codes. Please try again.")
       ).toBeInTheDocument();
     });
+  });
+
+  it("renders daily haiku banner when daily haiku is available", async () => {
+    server.use(
+      http.get("http://localhost:3000/api/v1/haikus/daily", () => {
+        return HttpResponse.json({
+          haiku: {
+            id: 10,
+            content: "All is well today\nThe request went through just fine\nTwo hundred success",
+            author_name: "Happy Poet",
+            vote_count: 12,
+            http_code: { code: 200, description: "OK" },
+          },
+        });
+      })
+    );
+
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("✨ Haiku of the Day")).toBeInTheDocument();
+    });
+
+    expect(screen.getByText(/HTTP 200 — OK/)).toBeInTheDocument();
   });
 
   it("groups multiple codes under the same category correctly", async () => {

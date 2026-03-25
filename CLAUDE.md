@@ -2,6 +2,23 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Parallel feature development
+
+**Always use a git worktree for each feature when working in parallel.** Never run two Claude Code sessions in the same working directory simultaneously — edits will silently overwrite each other.
+
+```bash
+# Start a new feature
+git worktree add ../http-haiku-<feature-name> -b <feature-name>
+# Open that directory in the second Claude Code session
+
+# Clean up after merging
+git worktree remove ../http-haiku-<feature-name>
+git branch -d <feature-name>
+
+# List active worktrees
+git worktree list
+```
+
 ## What this project is
 
 HTTP Haiku is a monorepo with a Rails 8 JSON API backend and a React + TypeScript frontend. Users browse HTTP status codes, submit haikus for each code, and upvote favorites. Voting is session-based (no authentication).

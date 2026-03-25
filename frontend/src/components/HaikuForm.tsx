@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateHaikuRequest } from "../lib/api";
 import { haikusApi } from "../lib/api";
+import { useAuth } from "../hooks/useAuth";
 
 interface HaikuFormProps {
   httpCode: number;
@@ -10,8 +12,8 @@ interface HaikuFormProps {
 
 export default function HaikuForm({ httpCode }: HaikuFormProps) {
   const queryClient = useQueryClient();
+  const { isLoggedIn, isLoading } = useAuth();
   const [content, setContent] = useState("");
-  const [authorName, setAuthorName] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const createMutation = useMutation({
@@ -19,7 +21,6 @@ export default function HaikuForm({ httpCode }: HaikuFormProps) {
     onSuccess: () => {
       // Clear form
       setContent("");
-      setAuthorName("");
       setError(null);
       // Invalidate queries to refresh the data
       queryClient.invalidateQueries({ queryKey: ["httpCode", httpCode] });
@@ -33,6 +34,25 @@ export default function HaikuForm({ httpCode }: HaikuFormProps) {
       }
     },
   });
+
+  if (isLoading) {
+    return (
+      <div className="haiku-form">
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="haiku-form">
+        <h2>Submit Your Haiku</h2>
+        <p className="auth-prompt">
+          <Link to="/login">Sign in</Link> to submit a haiku.
+        </p>
+      </div>
+    );
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +68,6 @@ export default function HaikuForm({ httpCode }: HaikuFormProps) {
     createMutation.mutate({
       http_code: httpCode,
       content,
-      author_name: authorName,
     });
   };
 
@@ -71,20 +90,6 @@ export default function HaikuForm({ httpCode }: HaikuFormProps) {
             rows={5}
             maxLength={200}
             required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="authorName">
-            Your Name (optional)
-            <span className="hint">Leave blank to post as "Anonymous"</span>
-          </label>
-          <input
-            type="text"
-            id="authorName"
-            value={authorName}
-            onChange={(e) => setAuthorName(e.target.value)}
-            placeholder="Anonymous"
-            maxLength={50}
           />
         </div>
         {error && <div className="error-message">{error}</div>}

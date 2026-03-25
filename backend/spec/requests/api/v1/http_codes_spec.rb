@@ -4,6 +4,7 @@ RSpec.describe "Api::V1::HttpCodes", type: :request do
   describe "GET /api/v1/http_codes" do
     let!(:http_code1) { HttpCode.create!(code: 200, description: "OK", category: "success") }
     let!(:http_code2) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }
+    let(:user) { FactoryBot.create(:user) }
 
     it "returns all HTTP codes" do
       get "/api/v1/http_codes"
@@ -13,7 +14,7 @@ RSpec.describe "Api::V1::HttpCodes", type: :request do
     end
 
     it "includes top haiku for each code" do
-      haiku = http_code1.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5)
+      haiku = http_code1.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 5, user: user)
 
       get "/api/v1/http_codes"
       json = JSON.parse(response.body)
@@ -33,9 +34,10 @@ RSpec.describe "Api::V1::HttpCodes", type: :request do
   end
 
   describe "GET /api/v1/http_codes/:code" do
+    let(:user) { FactoryBot.create(:user) }
     let!(:http_code) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }
-    let!(:haiku1) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 10) }
-    let!(:haiku2) { http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 5) }
+    let!(:haiku1) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 10, user: user) }
+    let!(:haiku2) { http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", vote_count: 5, user: user) }
 
     it "returns the HTTP code with haikus" do
       get "/api/v1/http_codes/404"
@@ -58,7 +60,7 @@ RSpec.describe "Api::V1::HttpCodes", type: :request do
 
     it "limits to 20 haikus" do
       25.times do |i|
-        http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: i)
+        http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: i, user: user)
       end
 
       get "/api/v1/http_codes/404"

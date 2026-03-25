@@ -5,7 +5,7 @@ import { http, HttpResponse } from "msw";
 import { Route, Routes } from "react-router-dom";
 import CodeDetailPage from "../pages/CodeDetailPage";
 import { renderWithProviders } from "./test-utils";
-import type { HttpCodeDetail } from "../lib/api";
+import type { HttpCodeDetail, User } from "../lib/api";
 
 const mockHttpCodeDetail: HttpCodeDetail = {
   id: 1,
@@ -32,12 +32,22 @@ const mockHttpCodeDetailWithUnderscore: HttpCodeDetail = {
   haikus: [],
 };
 
+const mockUser: User = {
+  id: 1,
+  email: "test@example.com",
+  username: "testuser",
+};
+
 const server = setupServer(
   http.get("http://localhost:3000/api/v1/http_codes/404", () => {
     return HttpResponse.json({ http_code: mockHttpCodeDetail });
   }),
   http.get("http://localhost:3000/api/v1/http_codes/500", () => {
     return HttpResponse.json({ http_code: mockHttpCodeDetailWithUnderscore });
+  }),
+  // Default: unauthenticated
+  http.get("http://localhost:3000/api/v1/users/me", () => {
+    return HttpResponse.json({ error: "Authentication required" }, { status: 401 });
   })
 );
 
@@ -78,7 +88,7 @@ describe("CodeDetailPage", () => {
     });
   });
 
-  it("renders haiku list and form after data loads", async () => {
+  it("renders haiku list and form section after data loads", async () => {
     renderCodeDetailPage("/code/404");
 
     await waitFor(() => {
@@ -88,7 +98,24 @@ describe("CodeDetailPage", () => {
       );
     });
 
-    expect(screen.getByRole("button", { name: "Submit Haiku" })).toBeInTheDocument();
+    // The form section renders with "Submit Your Haiku" heading after auth resolves
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { level: 2, name: "Submit Your Haiku" })).toBeInTheDocument();
+    });
+  });
+
+  it("renders form with submit button when authenticated", async () => {
+    server.use(
+      http.get("http://localhost:3000/api/v1/users/me", () => {
+        return HttpResponse.json({ user: mockUser });
+      })
+    );
+
+    renderCodeDetailPage("/code/404");
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Submit Haiku" })).toBeInTheDocument();
+    });
   });
 
   it("renders back link to home page", async () => {

@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Vote, type: :model do
   let(:http_code) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }
-  let(:haiku) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again") }
+  let(:user) { FactoryBot.create(:user) }
+  let(:haiku) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", user: user) }
 
   describe "validations" do
     it "is valid with valid attributes" do
@@ -22,7 +23,7 @@ RSpec.describe Vote, type: :model do
     end
 
     it "allows same session to vote on different haikus" do
-      haiku2 = http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines")
+      haiku2 = http_code.haikus.create!(content: "Still mountain morning\nSnow falls on frozen forests\nWind stirs the dark pines", user: user)
       Vote.create!(haiku: haiku, session_id: "test_session")
       vote2 = Vote.new(haiku: haiku2, session_id: "test_session")
       expect(vote2).to be_valid

@@ -2,14 +2,18 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Haikus", type: :request do
   let!(:http_code) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }
+  let!(:user) { FactoryBot.create(:user) }
+
+  before do
+    post "/api/v1/session", params: { session: { email: user.email, password: "password123" } }, as: :json
+  end
 
   describe "POST /api/v1/haikus" do
     let(:valid_params) do
       {
         haiku: {
           http_code: 404,
-          content: "An old silent pond\nA frog jumps into the pond\nSplash silence again",
-          author_name: "Test Author"
+          content: "An old silent pond\nA frog jumps into the pond\nSplash silence again"
         }
       }
     end
@@ -22,16 +26,23 @@ RSpec.describe "Api::V1::Haikus", type: :request do
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
       expect(json["haiku"]["content"]).to eq(valid_params[:haiku][:content])
-      expect(json["haiku"]["author_name"]).to eq("Test Author")
     end
 
-    it "defaults to Anonymous when author_name is blank" do
-      valid_params[:haiku][:author_name] = ""
-
+    it "sets author_name from the logged-in user's username" do
       post "/api/v1/haikus", params: valid_params, as: :json
 
       json = JSON.parse(response.body)
-      expect(json["haiku"]["author_name"]).to eq("Anonymous")
+      expect(json["haiku"]["author_name"]).to eq(user.username)
+    end
+
+    it "returns 401 when not authenticated" do
+      cookies.delete("_http_haiku_session")
+
+      post "/api/v1/haikus", params: valid_params, as: :json
+
+      expect(response).to have_http_status(:unauthorized)
+      json = JSON.parse(response.body)
+      expect(json["error"]).to eq("Authentication required")
     end
 
     it "returns error for invalid content (not 3 lines)" do
@@ -66,7 +77,7 @@ RSpec.describe "Api::V1::Haikus", type: :request do
   end
 
   describe "POST /api/v1/haikus/:id/vote" do
-    let!(:haiku) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again") }
+    let!(:haiku) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", user: user) }
 
     it "increments vote count" do
       expect {
