@@ -398,3 +398,180 @@
 .votes {
   font-weight: 500;
 }
+
+/* Auth Nav */
+.auth-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.nav-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.nav-username {
+  color: white;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.nav-logout-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.nav-logout-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.nav-logout-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Auth Pages */
+.auth-page {
+  max-width: 480px;
+  margin: 3rem auto;
+}
+
+.auth-page h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #667eea;
+}
+
+.auth-form {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+}
+
+.auth-form button[type="submit"] {
+  width: 100%;
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+
+.auth-form button[type="submit"]:hover:not(:disabled) {
+  background: #764ba2;
+}
+
+.auth-form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-switch {
+  text-align: center;
+  color: #666;
+  margin-top: 1rem;
+}
+
+.auth-switch a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* Daily Haiku Banner */
+.daily-haiku-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.daily-haiku-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 0.5rem;
+}
+
+.daily-haiku-code {
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.daily-haiku-code:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.daily-haiku-content {
+  font-family: 'Georgia', serif;
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: white;
+  margin: 0 auto 1.25rem;
+  max-width: 480px;
+}
+
+.daily-haiku-meta {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* Auth Prompt in HaikuForm */
+.auth-prompt {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.auth-prompt a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-prompt a:hover {
+  text-decoration: underline;
+}

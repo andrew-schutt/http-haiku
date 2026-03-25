@@ -1,11 +1,13 @@
 module Api
   module V1
     class HaikusController < ApplicationController
+      before_action :require_authentication, only: [:create]
+
       def create
         http_code = HttpCode.find_by!(code: haiku_params[:http_code])
         haiku = http_code.haikus.build(
           content: haiku_params[:content],
-          author_name: haiku_params[:author_name].presence || "Anonymous"
+          user: current_user
         )
 
         if haiku.save
@@ -17,6 +19,19 @@ module Api
             errors: haiku.errors.full_messages
           }, status: :unprocessable_entity
         end
+      end
+
+      def daily
+        count = Haiku.count
+        return render json: { error: "No haikus yet" }, status: :not_found if count.zero?
+
+        offset = Random.new(Date.today.jd).rand(count)
+        haiku = Haiku.includes(:http_code).offset(offset).first
+
+        render json: {
+          haiku: haiku.as_json(only: [:id, :content, :author_name, :vote_count])
+                    .merge(http_code: haiku.http_code.as_json(only: [:code, :description]))
+        }, status: :ok
       end
 
       def vote
@@ -46,7 +61,7 @@ module Api
       private
 
       def haiku_params
-        params.expect(haiku: [:http_code, :content, :author_name])
+        params.expect(haiku: [:http_code, :content])
       end
     end
   end

@@ -1,13 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import type { HttpCode } from "../lib/api";
-import { httpCodesApi } from "../lib/api";
+import { httpCodesApi, haikusApi } from "../lib/api";
 import HttpCodeCard from "../components/HttpCodeCard";
+import DailyHaikuBanner from "../components/DailyHaikuBanner";
 import Layout from "../components/Layout";
 
 export default function HomePage() {
   const { data: httpCodes, isLoading, error } = useQuery({
     queryKey: ["httpCodes"],
     queryFn: httpCodesApi.getAll,
+  });
+
+  const { data: dailyHaiku } = useQuery({
+    queryKey: ["dailyHaiku"],
+    queryFn: haikusApi.getDaily,
+    retry: false,
   });
 
   if (isLoading) {
@@ -54,6 +61,7 @@ export default function HomePage() {
   return (
     <Layout>
       <div className="home-page">
+        {dailyHaiku && <DailyHaikuBanner haiku={dailyHaiku} />}
         <div className="intro">
           <p className="tagline">
             Explore HTTP status codes through the art of haiku. Vote for your

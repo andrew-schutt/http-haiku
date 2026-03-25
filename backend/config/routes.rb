@@ -11,10 +11,17 @@ Rails.application.routes.draw do
       resources :http_codes, only: [:index, :show], param: :code
 
       resources :haikus, only: [:create] do
+        collection do
+          get :daily
+        end
         member do
           post :vote
         end
       end
+
+      resources :users, only: [:create]
+      get "users/me", to: "users#me", as: :current_user
+      resource :session, only: [:create, :destroy]
     end
   end
 end
