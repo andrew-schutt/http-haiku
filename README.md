@@ -27,8 +27,7 @@ A web application where users can submit and vote on haikus written for specific
 
 ### Deployment
 - **Docker** multi-stage builds
-- **Azure App Service** + **Azure PostgreSQL**
-- Automated deployment scripts
+- **Fly.io** hosting
 
 ## Project Structure
 
@@ -48,7 +47,8 @@ http-haiku/
 │   │   └── lib/
 │   └── public/
 ├── scripts/
-│   └── deploy-azure.sh
+│   └── setup-fly.sh
+├── fly.toml
 ├── Dockerfile
 └── docker-compose.yml
 ```
@@ -178,39 +178,38 @@ npm run test
 
 ## Deployment
 
-### Deploy to Azure
+### Deploy to Fly.io
 
-1. Install Azure CLI and login:
-```bash
-az login
-```
+#### First-time setup
 
-2. Run the deployment script:
+Run the setup script from the repo root:
+
 ```bash
-./scripts/deploy-azure.sh
+./scripts/setup-fly.sh
 ```
 
 The script will:
-- Create Azure resource group
-- Set up Container Registry
-- Build and push Docker image
-- Create PostgreSQL database
-- Deploy to App Service
-- Configure environment variables
+- Install the Fly CLI (if needed)
+- Authenticate with Fly.io
+- Create the app and provision a Postgres cluster
+- Attach Postgres and set `DATABASE_URL`
+- Set `SECRET_KEY_BASE`
+- Deploy and seed the database
 
-3. Access your application at the provided URL!
+Your app will be available at `https://http-haiku.fly.dev`.
 
-### Manual Docker Build
+#### Subsequent deploys
 
 ```bash
-# Build the image
-docker build -t http-haiku .
+fly deploy
+```
 
-# Run the container
-docker run -p 3000:3000 \
-  -e DATABASE_URL="postgresql://user:pass@host:5432/db" \
-  -e SECRET_KEY_BASE="your-secret-key" \
-  http-haiku
+#### Useful commands
+
+```bash
+fly status       # check app health
+fly logs         # stream logs
+fly ssh console  # open a shell on the running instance
 ```
 
 ## Environment Variables
@@ -239,7 +238,6 @@ docker run -p 3000:3000 \
 - [ ] User accounts with authentication
 - [ ] Edit/delete own haikus
 - [ ] Admin moderation interface
-- [ ] Syllable counting validation (5-7-5 pattern)
 - [ ] Search/filter functionality
 - [ ] Haiku of the day feature
 - [ ] Social media sharing
