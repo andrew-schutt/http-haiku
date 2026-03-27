@@ -4,13 +4,12 @@ A web application where users can submit and vote on haikus written for specific
 
 ## Features
 
-- 📝 Submit haikus for any HTTP status code (must follow 5-7-5 syllable structure)
-- ❤️ Vote on your favorite haikus (once per session)
+- 📝 Submit haikus for any HTTP status code (requires account; must follow 5-7-5 syllable structure)
+- ❤️ Vote on your favorite haikus (once per session, no account required)
 - 🎯 View top 20 haikus for each status code
+- ✨ Daily haiku feature — a different haiku is highlighted each day
 - 🔍 Browse all HTTP codes grouped by category
 - 🎨 Clean, modern UI with responsive design
-- 📣 Unobtrusive developer-targeted ads via Carbon Ads
-- ☕ Optional Ko-fi donation support
 
 ## Technology Stack
 
@@ -18,7 +17,8 @@ A web application where users can submit and vote on haikus written for specific
 - **Rails 8** (API mode)
 - **PostgreSQL** database
 - **RSpec** for testing
-- Session-based voting (no authentication required)
+- Session-based voting (no account required to vote)
+- User accounts required to submit haikus
 
 ### Frontend
 - **React 19** with TypeScript
@@ -121,21 +121,26 @@ docker-compose up
 ```
 GET    /api/v1/http_codes           # All codes with top haiku each
 GET    /api/v1/http_codes/:code     # Specific code with top 20 haikus
-POST   /api/v1/haikus               # Submit new haiku
-POST   /api/v1/haikus/:id/vote      # Upvote a haiku
+POST   /api/v1/haikus               # Submit new haiku (auth required)
+GET    /api/v1/haikus/daily         # Haiku of the day
+POST   /api/v1/haikus/:id/vote      # Upvote a haiku (session-based)
+POST   /api/v1/users                # Sign up
+POST   /api/v1/session              # Log in
+DELETE /api/v1/session              # Log out
+GET    /api/v1/users/me             # Current user (auth required)
 ```
 
 ### Example API Request
 
-**Submit a haiku:**
+**Submit a haiku (requires a logged-in session cookie):**
 ```bash
 curl -X POST http://localhost:3000/api/v1/haikus \
   -H "Content-Type: application/json" \
+  -H "Cookie: _http_haiku_session=YOUR_SESSION" \
   -d '{
     "haiku": {
       "http_code": 404,
-      "content": "Page not found here\nSearching through empty folders\nSilence greets your call",
-      "author_name": "Code Poet"
+      "content": "Page not found here\nSearching through empty folders\nSilence greets your call"
     }
   }'
 ```
@@ -148,6 +153,11 @@ curl -X POST http://localhost:3000/api/v1/haikus/1/vote \
 
 ## Database Schema
 
+### users
+- `email` (text, unique, normalized to lowercase) - User email
+- `username` (text, unique, 2–30 chars) - Display name
+- `password_digest` (text) - bcrypt password hash
+
 ### http_codes
 - `code` (integer, unique) - HTTP status code
 - `description` (text) - Status description
@@ -155,8 +165,9 @@ curl -X POST http://localhost:3000/api/v1/haikus/1/vote \
 
 ### haikus
 - `http_code_id` (foreign key)
-- `content` (text, max 200 chars) - Must be exactly 3 lines
-- `author_name` (text, optional) - Display name or "Anonymous"
+- `user_id` (foreign key) - Author (required)
+- `content` (text, max 200 chars) - Must be exactly 3 lines in 5-7-5 syllable structure
+- `author_name` (text) - Copied from `user.username` on save
 - `vote_count` (integer, default 0) - Cached vote total
 
 ### votes
@@ -229,8 +240,8 @@ fly ssh console  # open a shell on the running instance
 
 ## Key Design Decisions
 
-1. **Anonymous voting**: No user accounts required (MVP approach)
-2. **Session-based tracking**: Prevents duplicate votes without authentication
+1. **User accounts**: Required to submit haikus; `author_name` is always the submitter's username
+2. **Session-based vote tracking**: Voting uses a `voter_token` UUID in the session cookie — prevents duplicate votes without requiring an account
 3. **Seeded HTTP codes**: All standard codes (100-599) pre-populated
 4. **5-7-5 syllable validation**: Enforced on both frontend and backend
 5. **Counter cache**: Optimized vote counting with `counter_cache`
@@ -238,17 +249,13 @@ fly ssh console  # open a shell on the running instance
 
 ## Future Enhancements
 
-- [ ] User accounts with authentication
 - [ ] Edit/delete own haikus
 - [ ] Admin moderation interface
 - [ ] Search/filter functionality
-- [ ] Haiku of the day feature
 - [ ] Social media sharing
 - [ ] Dark mode theme
 - [ ] API rate limiting
 - [ ] Haiku collections/favorites
-- [ ] Carbon Ads integration (developer-targeted, privacy-respecting)
-- [ ] Ko-fi donation link in footer
 
 ## Contributing
 

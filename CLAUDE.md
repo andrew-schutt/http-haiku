@@ -21,7 +21,7 @@ git worktree list
 
 ## What this project is
 
-HTTP Haiku is a monorepo with a Rails 8 JSON API backend and a React + TypeScript frontend. Users browse HTTP status codes, submit haikus for each code, and upvote favorites. Voting is session-based (no authentication).
+HTTP Haiku is a monorepo with a Rails 8 JSON API backend and a React + TypeScript frontend. Users sign up, browse HTTP status codes, submit haikus for each code, and upvote favorites. Submitting haikus requires authentication; voting uses a session-based `voter_token` (so anonymous users can vote without an account).
 
 ## Commands
 
@@ -67,7 +67,9 @@ config.middleware.use ActionDispatch::Session::CookieStore, key: "_http_haiku_se
 
 **Counter cache**: `Vote belongs_to :haiku, counter_cache: :vote_count` keeps `haikus.vote_count` in sync automatically — never set `vote_count` directly.
 
-**Routes**: All API routes are namespaced under `/api/v1`. The `http_codes` resource uses `only: [:index, :show]` with `param: :code` so the route param is the HTTP status integer (e.g. `/api/v1/http_codes/404`), not the record id. The `haikus` resource uses `only: [:create]` with a `post :vote` member route.
+**Authentication**: Users register via `POST /api/v1/users` and log in via `POST /api/v1/session`. The session stores `session[:user_id]`. `GET /api/v1/users/me` returns the current user. Submitting a haiku (`POST /api/v1/haikus`) requires authentication; the `author_name` is always set from `current_user.username`.
+
+**Routes**: All API routes are namespaced under `/api/v1`. The `http_codes` resource uses `only: [:index, :show]` with `param: :code` so the route param is the HTTP status integer (e.g. `/api/v1/http_codes/404`), not the record id. The `haikus` resource uses `only: [:create]` with a `get :daily` collection route and a `post :vote` member route. The frontend route for a code detail page is `/code/:code` (singular, no trailing 's').
 
 **CORS**: Configured in `config/initializers/cors.rb` to allow `localhost:5173` with `credentials: true` (required for session cookies to work cross-origin).
 
@@ -85,10 +87,12 @@ TypeScript is configured with `verbatimModuleSyntax`, so all type-only imports m
 
 ### Testing
 
-- Request specs test all 4 endpoints; models specs cover validations and associations; services spec covers HaikuCheck syllable validation
+- Request specs cover: http_codes (index/show), haikus (create/vote/daily), users (create/me), sessions (create/destroy)
+- Model specs cover: Haiku, HttpCode, Vote, User validations and associations
+- Services spec covers HaikuCheck syllable validation
 - `ActiveRecord::RecordNotFound` is caught by Rails middleware in request specs — test with `have_http_status(:not_found)`, not `raise_error`
 - To simulate a new browser session in a request spec: `cookies.delete("_http_haiku_session")`
-- Factories use `sequence(:code)` starting at 201 for `http_code` to avoid uniqueness collisions
+- Factories use `sequence(:code) { |n| 200 + n }` for `http_code` — the sequence counter starts at 1, so the first generated code is 201, avoiding collision with codes created directly in tests
 
 ## Rails conventions
 

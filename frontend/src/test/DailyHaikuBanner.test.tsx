@@ -35,7 +35,7 @@ describe("DailyHaikuBanner", () => {
   it("renders a link to the http code detail page", () => {
     renderWithProviders(<DailyHaikuBanner haiku={mockDailyHaiku} />);
     const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "/codes/404");
+    expect(link).toHaveAttribute("href", "/code/404");
     expect(link).toHaveTextContent("HTTP 404 — Not Found");
   });
 

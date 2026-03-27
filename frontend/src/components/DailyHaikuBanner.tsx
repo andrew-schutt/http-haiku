@@ -5,7 +5,7 @@ export default function DailyHaikuBanner({ haiku }: { haiku: DailyHaiku }) {
   return (
     <div className="daily-haiku-banner">
       <div className="daily-haiku-label">✨ Haiku of the Day</div>
-      <Link to={`/codes/${haiku.http_code.code}`} className="daily-haiku-code">
+      <Link to={`/code/${haiku.http_code.code}`} className="daily-haiku-code">
         HTTP {haiku.http_code.code} — {haiku.http_code.description}
       </Link>
       <pre className="haiku-content daily-haiku-content">{haiku.content}</pre>
