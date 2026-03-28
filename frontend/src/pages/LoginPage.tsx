@@ -1,29 +1,29 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { authApi } from "../lib/api";
-import { AUTH_QUERY_KEY } from "../hooks/useAuth";
-import Layout from "../components/Layout";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { authApi } from '../lib/api';
+import { AUTH_QUERY_KEY } from '../hooks/useAuth';
+import Layout from '../components/Layout';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const loginMutation = useMutation({
     mutationFn: authApi.login,
     onSuccess: (data) => {
       queryClient.setQueryData(AUTH_QUERY_KEY, data.user);
-      navigate("/");
+      navigate('/');
     },
     onError: (err: unknown) => {
       if (axios.isAxiosError(err) && err.response?.data?.error) {
         setError(err.response.data.error);
       } else {
-        setError("Login failed. Please try again.");
+        setError('Login failed. Please try again.');
       }
     },
   });
@@ -61,7 +61,7 @@ export default function LoginPage() {
           </div>
           {error && <div className="error-message">{error}</div>}
           <button type="submit" disabled={loginMutation.isPending}>
-            {loginMutation.isPending ? "Logging in..." : "Log In"}
+            {loginMutation.isPending ? 'Logging in...' : 'Log In'}
           </button>
         </form>
         <p className="auth-switch">

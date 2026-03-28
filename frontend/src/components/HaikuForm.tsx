@@ -1,10 +1,10 @@
-import axios from "axios";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { CreateHaikuRequest } from "../lib/api";
-import { haikusApi } from "../lib/api";
-import { useAuth } from "../hooks/useAuth";
+import axios from 'axios';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { CreateHaikuRequest } from '../lib/api';
+import { haikusApi } from '../lib/api';
+import { useAuth } from '../hooks/useAuth';
 
 interface HaikuFormProps {
   httpCode: number;
@@ -13,24 +13,24 @@ interface HaikuFormProps {
 export default function HaikuForm({ httpCode }: HaikuFormProps) {
   const queryClient = useQueryClient();
   const { isLoggedIn, isLoading } = useAuth();
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const createMutation = useMutation({
     mutationFn: (data: CreateHaikuRequest) => haikusApi.create(data),
     onSuccess: () => {
       // Clear form
-      setContent("");
+      setContent('');
       setError(null);
       // Invalidate queries to refresh the data
-      queryClient.invalidateQueries({ queryKey: ["httpCode", httpCode] });
-      queryClient.invalidateQueries({ queryKey: ["httpCodes"] });
+      queryClient.invalidateQueries({ queryKey: ['httpCode', httpCode] });
+      queryClient.invalidateQueries({ queryKey: ['httpCodes'] });
     },
     onError: (error: unknown) => {
       if (axios.isAxiosError(error) && error.response?.data?.errors) {
-        setError(error.response.data.errors.join(", "));
+        setError(error.response.data.errors.join(', '));
       } else {
-        setError("Failed to submit haiku. Please try again.");
+        setError('Failed to submit haiku. Please try again.');
       }
     },
   });
@@ -59,9 +59,9 @@ export default function HaikuForm({ httpCode }: HaikuFormProps) {
     setError(null);
 
     // Validate 3 lines
-    const lines = content.split("\n").filter((line) => line.trim() !== "");
+    const lines = content.split('\n').filter((line) => line.trim() !== '');
     if (lines.length !== 3) {
-      setError("Haiku must have exactly 3 lines");
+      setError('Haiku must have exactly 3 lines');
       return;
     }
 
@@ -94,7 +94,7 @@ export default function HaikuForm({ httpCode }: HaikuFormProps) {
         </div>
         {error && <div className="error-message">{error}</div>}
         <button type="submit" disabled={createMutation.isPending}>
-          {createMutation.isPending ? "Submitting..." : "Submit Haiku"}
+          {createMutation.isPending ? 'Submitting...' : 'Submit Haiku'}
         </button>
       </form>
     </div>

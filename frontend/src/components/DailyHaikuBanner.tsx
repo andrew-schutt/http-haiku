@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import type { DailyHaiku } from "../lib/api";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import type { DailyHaiku } from '../lib/api';
 
 export default function DailyHaikuBanner({ haiku }: { haiku: DailyHaiku }) {
   const [hasCopied, setHasCopied] = useState(false);
@@ -21,11 +21,8 @@ export default function DailyHaikuBanner({ haiku }: { haiku: DailyHaiku }) {
       <div className="daily-haiku-meta">
         <span className="author">— {haiku.author_name}</span>
         <span className="votes">❤️ {haiku.vote_count}</span>
-        <button
-          className={`copy-button ${hasCopied ? "copied" : ""}`}
-          onClick={handleCopy}
-        >
-          {hasCopied ? "Copied!" : "Copy link"}
+        <button className={`copy-button ${hasCopied ? 'copied' : ''}`} onClick={handleCopy}>
+          {hasCopied ? 'Copied!' : 'Copy link'}
         </button>
       </div>
     </div>

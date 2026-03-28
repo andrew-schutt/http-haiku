@@ -1,11 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import HomePage from "./pages/HomePage";
-import CodeDetailPage from "./pages/CodeDetailPage";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import AdminPage from "./pages/AdminPage";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './App.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import HomePage from './pages/HomePage';
+import CodeDetailPage from './pages/CodeDetailPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import AdminPage from './pages/AdminPage';
 
 // Create a client
 const queryClient = new QueryClient({

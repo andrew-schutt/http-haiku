@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 // Configure axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
   withCredentials: true, // Enable cookies for session tracking
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
@@ -66,7 +66,7 @@ export interface SignupRequest {
 export const httpCodesApi = {
   // Get all HTTP codes with their top haiku
   getAll: async (): Promise<HttpCode[]> => {
-    const response = await api.get("/api/v1/http_codes");
+    const response = await api.get('/api/v1/http_codes');
     return response.data.http_codes;
   },
 
@@ -80,7 +80,7 @@ export const httpCodesApi = {
 export const haikusApi = {
   // Create a new haiku
   create: async (data: CreateHaikuRequest): Promise<Haiku> => {
-    const response = await api.post("/api/v1/haikus", { haiku: data });
+    const response = await api.post('/api/v1/haikus', { haiku: data });
     return response.data.haiku;
   },
 
@@ -92,7 +92,7 @@ export const haikusApi = {
 
   // Get the haiku of the day
   getDaily: async (): Promise<DailyHaiku> => {
-    const response = await api.get("/api/v1/haikus/daily");
+    const response = await api.get('/api/v1/haikus/daily');
     return response.data.haiku;
   },
 
@@ -111,25 +111,25 @@ export const haikusApi = {
 export const authApi = {
   // Sign up a new user
   signup: async (data: SignupRequest): Promise<{ user: User }> => {
-    const response = await api.post("/api/v1/users", { user: data });
+    const response = await api.post('/api/v1/users', { user: data });
     return response.data;
   },
 
   // Log in an existing user
   login: async (data: LoginRequest): Promise<{ user: User }> => {
-    const response = await api.post("/api/v1/session", { session: data });
+    const response = await api.post('/api/v1/session', { session: data });
     return response.data;
   },
 
   // Log out
   logout: async (): Promise<{ message: string }> => {
-    const response = await api.delete("/api/v1/session");
+    const response = await api.delete('/api/v1/session');
     return response.data;
   },
 
   // Get the current authenticated user
   me: async (): Promise<User> => {
-    const response = await api.get("/api/v1/users/me");
+    const response = await api.get('/api/v1/users/me');
     return response.data.user;
   },
 };
@@ -153,9 +153,10 @@ export interface AdminUser {
 }
 
 export const adminApi = {
-  getHaikus: () => api.get<{ haikus: AdminHaiku[] }>("/api/v1/admin/haikus").then(r => r.data.haikus),
+  getHaikus: () =>
+    api.get<{ haikus: AdminHaiku[] }>('/api/v1/admin/haikus').then((r) => r.data.haikus),
   deleteHaiku: (id: number) => api.delete(`/api/v1/admin/haikus/${id}`),
-  getUsers: () => api.get<{ users: AdminUser[] }>("/api/v1/admin/users").then(r => r.data.users),
+  getUsers: () => api.get<{ users: AdminUser[] }>('/api/v1/admin/users').then((r) => r.data.users),
   deleteUser: (id: number) => api.delete(`/api/v1/admin/users/${id}`),
 };
 

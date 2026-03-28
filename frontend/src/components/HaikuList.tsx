@@ -1,5 +1,5 @@
-import type { Haiku } from "../lib/api";
-import HaikuCard from "./HaikuCard";
+import type { Haiku } from '../lib/api';
+import HaikuCard from './HaikuCard';
 
 interface HaikuListProps {
   haikus: Haiku[];

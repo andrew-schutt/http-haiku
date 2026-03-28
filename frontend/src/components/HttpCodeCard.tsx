@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import type { HttpCode } from "../lib/api";
+import { Link } from 'react-router-dom';
+import type { HttpCode } from '../lib/api';
 
 interface HttpCodeCardProps {
   httpCode: HttpCode;

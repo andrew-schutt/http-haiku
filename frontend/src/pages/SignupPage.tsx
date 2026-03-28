@@ -1,31 +1,31 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { authApi } from "../lib/api";
-import { AUTH_QUERY_KEY } from "../hooks/useAuth";
-import Layout from "../components/Layout";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { authApi } from '../lib/api';
+import { AUTH_QUERY_KEY } from '../hooks/useAuth';
+import Layout from '../components/Layout';
 
 export default function SignupPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const signupMutation = useMutation({
     mutationFn: authApi.signup,
     onSuccess: (data) => {
       queryClient.setQueryData(AUTH_QUERY_KEY, data.user);
-      navigate("/");
+      navigate('/');
     },
     onError: (err: unknown) => {
       if (axios.isAxiosError(err) && err.response?.data?.errors) {
-        setError((err.response.data.errors as string[]).join(", "));
+        setError((err.response.data.errors as string[]).join(', '));
       } else {
-        setError("Signup failed. Please try again.");
+        setError('Signup failed. Please try again.');
       }
     },
   });
@@ -33,7 +33,12 @@ export default function SignupPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    signupMutation.mutate({ email, username, password, password_confirmation: passwordConfirmation });
+    signupMutation.mutate({
+      email,
+      username,
+      password,
+      password_confirmation: passwordConfirmation,
+    });
   };
 
   return (
@@ -83,7 +88,7 @@ export default function SignupPage() {
           </div>
           {error && <div className="error-message">{error}</div>}
           <button type="submit" disabled={signupMutation.isPending}>
-            {signupMutation.isPending ? "Creating account..." : "Sign Up"}
+            {signupMutation.isPending ? 'Creating account...' : 'Sign Up'}
           </button>
         </form>
         <p className="auth-switch">

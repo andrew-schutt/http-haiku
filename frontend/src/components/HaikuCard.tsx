@@ -1,9 +1,9 @@
-import axios from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Haiku } from "../lib/api";
-import { haikusApi } from "../lib/api";
-import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import axios from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { Haiku } from '../lib/api';
+import { haikusApi } from '../lib/api';
+import { useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
 
 interface HaikuCardProps {
   haiku: Haiku;
@@ -31,14 +31,14 @@ export default function HaikuCard({ haiku, code }: HaikuCardProps) {
     mutationFn: () => haikusApi.vote(haiku.id),
     onSuccess: () => {
       setHasVoted(true);
-      queryClient.invalidateQueries({ queryKey: ["httpCode"] });
-      queryClient.invalidateQueries({ queryKey: ["httpCodes"] });
+      queryClient.invalidateQueries({ queryKey: ['httpCode'] });
+      queryClient.invalidateQueries({ queryKey: ['httpCodes'] });
     },
     onError: (error: unknown) => {
       const message =
         axios.isAxiosError(error) && error.response?.data?.error
           ? error.response.data.error
-          : "Failed to vote. Please try again.";
+          : 'Failed to vote. Please try again.';
       alert(message);
     },
   });
@@ -47,14 +47,14 @@ export default function HaikuCard({ haiku, code }: HaikuCardProps) {
     mutationFn: () => haikusApi.update(haiku.id, editContent),
     onSuccess: () => {
       setIsEditing(false);
-      queryClient.invalidateQueries({ queryKey: ["httpCode"] });
-      queryClient.invalidateQueries({ queryKey: ["httpCodes"] });
+      queryClient.invalidateQueries({ queryKey: ['httpCode'] });
+      queryClient.invalidateQueries({ queryKey: ['httpCodes'] });
     },
     onError: (error: unknown) => {
       const message =
         axios.isAxiosError(error) && error.response?.data?.errors
-          ? (error.response.data.errors as string[]).join(", ")
-          : "Failed to update haiku. Please try again.";
+          ? (error.response.data.errors as string[]).join(', ')
+          : 'Failed to update haiku. Please try again.';
       setEditError(message);
     },
   });
@@ -62,22 +62,22 @@ export default function HaikuCard({ haiku, code }: HaikuCardProps) {
   const deleteMutation = useMutation({
     mutationFn: () => haikusApi.destroy(haiku.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["httpCode"] });
-      queryClient.invalidateQueries({ queryKey: ["httpCodes"] });
+      queryClient.invalidateQueries({ queryKey: ['httpCode'] });
+      queryClient.invalidateQueries({ queryKey: ['httpCodes'] });
     },
     onError: (error: unknown) => {
       const message =
         axios.isAxiosError(error) && error.response?.data?.error
           ? error.response.data.error
-          : "Failed to delete haiku. Please try again.";
+          : 'Failed to delete haiku. Please try again.';
       alert(message);
     },
   });
 
   const handleSave = () => {
-    const lines = editContent.split("\n");
+    const lines = editContent.split('\n');
     if (lines.length !== 3) {
-      setEditError("Content must have exactly 3 lines");
+      setEditError('Content must have exactly 3 lines');
       return;
     }
     setEditError(null);
@@ -85,7 +85,7 @@ export default function HaikuCard({ haiku, code }: HaikuCardProps) {
   };
 
   const handleDelete = () => {
-    if (window.confirm("Delete this haiku?")) {
+    if (window.confirm('Delete this haiku?')) {
       deleteMutation.mutate();
     }
   };
@@ -130,24 +130,18 @@ export default function HaikuCard({ haiku, code }: HaikuCardProps) {
       <div className="haiku-footer">
         <span className="author">— {haiku.author_name}</span>
         <button
-          className={`vote-button ${hasVoted ? "voted" : ""}`}
+          className={`vote-button ${hasVoted ? 'voted' : ''}`}
           onClick={() => voteMutation.mutate()}
           disabled={voteMutation.isPending || hasVoted}
         >
           ❤️ {haiku.vote_count}
         </button>
-        <button
-          className={`copy-button ${hasCopied ? "copied" : ""}`}
-          onClick={handleCopy}
-        >
-          {hasCopied ? "Copied!" : "Copy link"}
+        <button className={`copy-button ${hasCopied ? 'copied' : ''}`} onClick={handleCopy}>
+          {hasCopied ? 'Copied!' : 'Copy link'}
         </button>
         {isOwner && (
           <div className="haiku-actions">
-            <button
-              className="haiku-edit-button"
-              onClick={() => setIsEditing(true)}
-            >
+            <button className="haiku-edit-button" onClick={() => setIsEditing(true)}>
               Edit
             </button>
             <button

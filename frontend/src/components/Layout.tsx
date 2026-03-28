@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "../lib/api";
-import { useAuth, AUTH_QUERY_KEY } from "../hooks/useAuth";
+import type { ReactNode } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { authApi } from '../lib/api';
+import { useAuth, AUTH_QUERY_KEY } from '../hooks/useAuth';
 
 interface LayoutProps {
   children: ReactNode;
@@ -17,7 +17,7 @@ export default function Layout({ children }: LayoutProps) {
     mutationFn: authApi.logout,
     onSuccess: () => {
       queryClient.setQueryData(AUTH_QUERY_KEY, null);
-      navigate("/");
+      navigate('/');
     },
   });
 
@@ -32,7 +32,11 @@ export default function Layout({ children }: LayoutProps) {
               {isLoggedIn ? (
                 <>
                   <span className="nav-username">{user?.username}</span>
-                  {user?.is_admin && <Link to="/admin" className="nav-link">Admin</Link>}
+                  {user?.is_admin && (
+                    <Link to="/admin" className="nav-link">
+                      Admin
+                    </Link>
+                  )}
                   <button
                     className="nav-logout-button"
                     onClick={() => logoutMutation.mutate()}
@@ -43,8 +47,12 @@ export default function Layout({ children }: LayoutProps) {
                 </>
               ) : (
                 <>
-                  <Link className="nav-link" to="/login">Login</Link>
-                  <Link className="nav-link" to="/signup">Sign up</Link>
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                  <Link className="nav-link" to="/signup">
+                    Sign up
+                  </Link>
                 </>
               )}
             </nav>

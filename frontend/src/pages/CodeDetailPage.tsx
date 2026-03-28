@@ -1,16 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
-import { useParams, Link } from "react-router-dom";
-import { httpCodesApi } from "../lib/api";
-import Layout from "../components/Layout";
-import HaikuList from "../components/HaikuList";
-import HaikuForm from "../components/HaikuForm";
+import { useQuery } from '@tanstack/react-query';
+import { useParams, Link } from 'react-router-dom';
+import { httpCodesApi } from '../lib/api';
+import Layout from '../components/Layout';
+import HaikuList from '../components/HaikuList';
+import HaikuForm from '../components/HaikuForm';
 
 export default function CodeDetailPage() {
   const { code } = useParams<{ code: string }>();
-  const codeNumber = parseInt(code || "0", 10);
+  const codeNumber = parseInt(code || '0', 10);
 
-  const { data: httpCode, isLoading, error } = useQuery({
-    queryKey: ["httpCode", codeNumber],
+  const {
+    data: httpCode,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['httpCode', codeNumber],
     queryFn: () => httpCodesApi.getByCode(codeNumber),
     enabled: !!codeNumber,
   });
@@ -28,7 +32,9 @@ export default function CodeDetailPage() {
       <Layout>
         <div className="error">
           <h2>HTTP code not found</h2>
-          <Link to="/" className="back-link">← Back to all codes</Link>
+          <Link to="/" className="back-link">
+            ← Back to all codes
+          </Link>
         </div>
       </Layout>
     );
@@ -38,13 +44,15 @@ export default function CodeDetailPage() {
     <Layout>
       <div className="code-detail-page">
         <div className="page-header">
-          <Link to="/" className="back-link">← Back to all codes</Link>
+          <Link to="/" className="back-link">
+            ← Back to all codes
+          </Link>
           <div className="code-info">
             <h1>
               <span className="code-number">{httpCode?.code}</span>
               <span className="code-description">{httpCode?.description}</span>
             </h1>
-            <span className="category-badge">{httpCode?.category.replace("_", " ")}</span>
+            <span className="category-badge">{httpCode?.category.replace('_', ' ')}</span>
           </div>
         </div>
 
@@ -54,9 +62,7 @@ export default function CodeDetailPage() {
             {httpCode && <HaikuList haikus={httpCode.haikus} code={codeNumber} />}
           </div>
 
-          <div className="form-section">
-            {codeNumber && <HaikuForm httpCode={codeNumber} />}
-          </div>
+          <div className="form-section">{codeNumber && <HaikuForm httpCode={codeNumber} />}</div>
         </div>
       </div>
     </Layout>

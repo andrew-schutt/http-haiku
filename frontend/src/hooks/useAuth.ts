@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "../lib/api";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { authApi } from '../lib/api';
 
-export const AUTH_QUERY_KEY = ["auth", "me"] as const;
+export const AUTH_QUERY_KEY = ['auth', 'me'] as const;
 
 export function useAuth() {
   const queryClient = useQueryClient();

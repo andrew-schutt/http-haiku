@@ -1,18 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
-import type { HttpCode } from "../lib/api";
-import { httpCodesApi, haikusApi } from "../lib/api";
-import HttpCodeCard from "../components/HttpCodeCard";
-import DailyHaikuBanner from "../components/DailyHaikuBanner";
-import Layout from "../components/Layout";
+import { useQuery } from '@tanstack/react-query';
+import type { HttpCode } from '../lib/api';
+import { httpCodesApi, haikusApi } from '../lib/api';
+import HttpCodeCard from '../components/HttpCodeCard';
+import DailyHaikuBanner from '../components/DailyHaikuBanner';
+import Layout from '../components/Layout';
 
 export default function HomePage() {
-  const { data: httpCodes, isLoading, error } = useQuery({
-    queryKey: ["httpCodes"],
+  const {
+    data: httpCodes,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['httpCodes'],
     queryFn: httpCodesApi.getAll,
   });
 
   const { data: dailyHaiku } = useQuery({
-    queryKey: ["dailyHaiku"],
+    queryKey: ['dailyHaiku'],
     queryFn: haikusApi.getDaily,
     retry: false,
   });
@@ -34,29 +38,26 @@ export default function HomePage() {
   }
 
   // Group codes by category
-  const groupedCodes = httpCodes?.reduce((acc, code) => {
-    if (!acc[code.category]) {
-      acc[code.category] = [];
-    }
-    acc[code.category].push(code);
-    return acc;
-  }, {} as Record<string, HttpCode[]>);
+  const groupedCodes = httpCodes?.reduce(
+    (acc, code) => {
+      if (!acc[code.category]) {
+        acc[code.category] = [];
+      }
+      acc[code.category].push(code);
+      return acc;
+    },
+    {} as Record<string, HttpCode[]>
+  );
 
   const categoryTitles: Record<string, string> = {
-    informational: "1xx Informational",
-    success: "2xx Success",
-    redirection: "3xx Redirection",
-    client_error: "4xx Client Error",
-    server_error: "5xx Server Error",
+    informational: '1xx Informational',
+    success: '2xx Success',
+    redirection: '3xx Redirection',
+    client_error: '4xx Client Error',
+    server_error: '5xx Server Error',
   };
 
-  const categoryOrder = [
-    "informational",
-    "success",
-    "redirection",
-    "client_error",
-    "server_error",
-  ];
+  const categoryOrder = ['informational', 'success', 'redirection', 'client_error', 'server_error'];
 
   return (
     <Layout>
@@ -64,8 +65,8 @@ export default function HomePage() {
         {dailyHaiku && <DailyHaikuBanner haiku={dailyHaiku} />}
         <div className="intro">
           <p className="tagline">
-            Explore HTTP status codes through the art of haiku. Vote for your
-            favorites or submit your own!
+            Explore HTTP status codes through the art of haiku. Vote for your favorites or submit
+            your own!
           </p>
         </div>
 

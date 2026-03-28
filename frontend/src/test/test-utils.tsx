@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
-import { render } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router-dom";
+import type { ReactNode } from 'react';
+import { render } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
 
 export function createTestQueryClient() {
   return new QueryClient({
@@ -23,7 +23,7 @@ interface RenderWithProvidersOptions {
 
 export function renderWithProviders(
   ui: ReactNode,
-  { initialEntries = ["/"] }: RenderWithProvidersOptions = {}
+  { initialEntries = ['/'] }: RenderWithProvidersOptions = {}
 ) {
   const queryClient = createTestQueryClient();
 
