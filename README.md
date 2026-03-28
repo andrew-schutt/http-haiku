@@ -256,6 +256,7 @@ fly ssh console  # open a shell on the running instance
 - [ ] Dark mode theme
 - [x] API rate limiting
 - [ ] Haiku collections/favorites
+- [x] Automated quality checks (CI pipeline: linting, tests, type-checking across backend and frontend)
 
 ## Contributing
 
