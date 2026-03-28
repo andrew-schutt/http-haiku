@@ -7,7 +7,7 @@ namespace :haikus do
   end
 
   desc "Clear haikus then reseed them. Optionally pass COUNT=n to limit haikus per code."
-  task :reseed, [:count] => :environment do |_t, args|
+  task :reseed, [ :count ] => :environment do |_t, args|
     count = args[:count] || ENV["COUNT"]
     ENV["HAIKU_COUNT"] = count.to_s if count
     Rake::Task["haikus:clear"].invoke

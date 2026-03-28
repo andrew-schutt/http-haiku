@@ -4,7 +4,7 @@ class Api::V1::Admin::UsersController < ApplicationController
 
   def index
     users = User.order(created_at: :desc)
-    render json: { users: users.as_json(only: [:id, :email, :username, :is_admin, :created_at]) }
+    render json: { users: users.as_json(only: [ :id, :email, :username, :is_admin, :created_at ]) }
   end
 
   def destroy

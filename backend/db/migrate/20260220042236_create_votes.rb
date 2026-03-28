@@ -8,7 +8,7 @@ class CreateVotes < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :votes, [:haiku_id, :session_id], unique: true
+    add_index :votes, [ :haiku_id, :session_id ], unique: true
     add_index :votes, :session_id
   end
 end

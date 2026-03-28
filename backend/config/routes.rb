@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
-      resources :http_codes, only: [:index, :show], param: :code
+      resources :http_codes, only: [ :index, :show ], param: :code
 
-      resources :haikus, only: [:create, :update, :destroy] do
+      resources :haikus, only: [ :create, :update, :destroy ] do
         collection do
           get :daily
         end
@@ -19,13 +19,13 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :users, only: [:create]
+      resources :users, only: [ :create ]
       get "users/me", to: "users#me", as: :current_user
-      resource :session, only: [:create, :destroy]
+      resource :session, only: [ :create, :destroy ]
 
       namespace :admin do
-        resources :haikus, only: [:index, :destroy]
-        resources :users, only: [:index, :destroy]
+        resources :haikus, only: [ :index, :destroy ]
+        resources :users, only: [ :index, :destroy ]
       end
     end
   end

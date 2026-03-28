@@ -5,7 +5,7 @@ class Api::V1::SessionsController < ApplicationController
     user = User.find_by_normalized_email(session_params[:email])
     if user&.authenticate(session_params[:password])
       session[:user_id] = user.id
-      render json: { user: user.as_json(only: [:id, :email, :username]) }
+      render json: { user: user.as_json(only: [ :id, :email, :username ]) }
     else
       render json: { error: "Invalid email or password" }, status: :unauthorized
     end
@@ -26,6 +26,6 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def session_params
-    params.expect(session: [:email, :password])
+    params.expect(session: [ :email, :password ])
   end
 end

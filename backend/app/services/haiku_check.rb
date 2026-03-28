@@ -1,5 +1,5 @@
 class HaikuCheck
-  STRUCTURE = [5, 7, 5].freeze
+  STRUCTURE = [ 5, 7, 5 ].freeze
 
   # Pure-Ruby syllable counter. Counts vowel groups then applies targeted
   # deduction rules for common silent-vowel patterns in English.
@@ -25,7 +25,7 @@ class HaikuCheck
       # Excludes 'd' and 't' so "wanted" → 2 and "needed" → 2 are preserved.
       count -= 1 if word =~ /[^aeiouydt]ed\z/ && count > 1
 
-      [count, 1].max
+      [ count, 1 ].max
     end
   end
 

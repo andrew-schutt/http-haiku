@@ -9,6 +9,6 @@ class CreateHaikus < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :haikus, [:http_code_id, :vote_count]
+    add_index :haikus, [ :http_code_id, :vote_count ]
   end
 end

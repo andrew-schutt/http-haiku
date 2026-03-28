@@ -1,9 +1,9 @@
 module Api
   module V1
     class HaikusController < ApplicationController
-      before_action :require_authentication, only: [:create, :update, :destroy]
-      before_action :set_haiku, only: [:update, :destroy, :vote]
-      before_action :require_ownership, only: [:update, :destroy]
+      before_action :require_authentication, only: [ :create, :update, :destroy ]
+      before_action :set_haiku, only: [ :update, :destroy, :vote ]
+      before_action :require_ownership, only: [ :update, :destroy ]
       before_action :throttle_haiku_create, only: :create
       before_action :throttle_vote, only: :vote
 
@@ -16,7 +16,7 @@ module Api
 
         if haiku.save
           render json: {
-            haiku: haiku.as_json(only: [:id, :content, :author_name, :vote_count, :user_id, :created_at])
+            haiku: haiku.as_json(only: [ :id, :content, :author_name, :vote_count, :user_id, :created_at ])
           }, status: :created
         else
           render json: {
@@ -28,7 +28,7 @@ module Api
       def update
         if @haiku.update(update_params)
           render json: {
-            haiku: @haiku.as_json(only: [:id, :content, :author_name, :vote_count, :user_id, :created_at])
+            haiku: @haiku.as_json(only: [ :id, :content, :author_name, :vote_count, :user_id, :created_at ])
           }, status: :ok
         else
           render json: {
@@ -50,8 +50,8 @@ module Api
         haiku = Haiku.includes(:http_code).offset(offset).first
 
         render json: {
-          haiku: haiku.as_json(only: [:id, :content, :author_name, :vote_count, :user_id])
-                    .merge(http_code: haiku.http_code.as_json(only: [:code, :description]))
+          haiku: haiku.as_json(only: [ :id, :content, :author_name, :vote_count, :user_id ])
+                    .merge(http_code: haiku.http_code.as_json(only: [ :code, :description ]))
         }, status: :ok
       end
 
@@ -71,7 +71,7 @@ module Api
           )
 
           render json: {
-            haiku: @haiku.reload.as_json(only: [:id, :content, :author_name, :vote_count, :user_id])
+            haiku: @haiku.reload.as_json(only: [ :id, :content, :author_name, :vote_count, :user_id ])
           }, status: :ok
         end
       end
@@ -103,11 +103,11 @@ module Api
       end
 
       def haiku_params
-        params.expect(haiku: [:http_code, :content])
+        params.expect(haiku: [ :http_code, :content ])
       end
 
       def update_params
-        params.expect(haiku: [:content])
+        params.expect(haiku: [ :content ])
       end
     end
   end

@@ -101,94 +101,94 @@ haiku_data = {
   200 => [
     { content: "Request received well\nAll systems working as planned\nThe server smiles back", author: "DevPoet" },
     { content: "The path was open\nYour call arrived and was heard\nAll is well in here", author: "WebBard" },
-    { content: "Nothing went awry\nYour call was heard and answered\nSuccess, plain and clean", author: nil },
+    { content: "Nothing went awry\nYour call was heard and answered\nSuccess, plain and clean", author: nil }
   ],
   201 => [
     { content: "Born from your request\nA new resource now exists\nWelcome to the world", author: "DevPoet" },
     { content: "You asked, it was made\nA record lives in storage\nThe database grows", author: nil },
-    { content: "From nothing to life\nYour data now persists here\nThe record is new", author: "WebBard" },
+    { content: "From nothing to life\nYour data now persists here\nThe record is new", author: "WebBard" }
   ],
   204 => [
     { content: "Done but silence speaks\nThe action needs no reply\nEmpty is enough", author: "WebBard" },
-    { content: "No body follows\nYet the work was done in full\nLess is often more", author: nil },
+    { content: "No body follows\nYet the work was done in full\nLess is often more", author: nil }
   ],
   301 => [
     { content: "This place is no more\nFollow the new path I give\nDo not come back here", author: "WebBard" },
-    { content: "Update your bookmarks\nI have left this address now\nForward, ever on", author: nil },
+    { content: "Update your bookmarks\nI have left this address now\nForward, ever on", author: nil }
   ],
   304 => [
     { content: "Nothing has changed here\nUse what you already have\nCache saves us both time", author: "DevPoet" },
-    { content: "Your copy still holds\nI checked and nothing had changed\nSave the bandwidth, friend", author: "WebBard" },
+    { content: "Your copy still holds\nI checked and nothing had changed\nSave the bandwidth, friend", author: "WebBard" }
   ],
   400 => [
     { content: "I tried to parse you\nBut your syntax made no sense\nPlease try again, friend", author: nil },
     { content: "Malformed and unclear\nI cannot process this mess\nFix it and return", author: "DevPoet" },
-    { content: "You sent me garbled text\nWords I could not understand\nSpeak clearly next time", author: "WebBard" },
+    { content: "You sent me garbled text\nWords I could not understand\nSpeak clearly next time", author: "WebBard" }
   ],
   401 => [
     { content: "Who goes there, stranger\nShow me your credentials first\nI must know your name", author: "GateKeeper" },
     { content: "The door remains closed\nAuthenticate yourself now\nThen we can proceed", author: "DevPoet" },
-    { content: "You have not proven\nThat you are who you claim to\nKey please, then enter", author: nil },
+    { content: "You have not proven\nThat you are who you claim to\nKey please, then enter", author: nil }
   ],
   403 => [
     { content: "I know who you are\nBut you cannot pass through here\nThis is not your path", author: "GateKeeper" },
     { content: "Credentials correct\nYet the path remains barred shut\nNot all doors open", author: "WebBard" },
-    { content: "Authenticated\nYet authorization fails\nRank has its limits", author: "DevPoet" },
+    { content: "Authenticated\nYet authorization fails\nRank has its limits", author: "DevPoet" }
   ],
   404 => [
     { content: "Searched high and low here\nNothing matches what you asked\nIt simply is not", author: "WebBard" },
     { content: "This page has vanished\nLike smoke into morning air\nNothing left to see", author: "DevPoet" },
     { content: "The address you seek\nExists in no record here\nPerhaps it once was", author: nil },
-    { content: "Gone like autumn leaves\nNo trace of what you seek here\nThe void answers you", author: "HaikuBot" },
+    { content: "Gone like autumn leaves\nNo trace of what you seek here\nThe void answers you", author: "HaikuBot" }
   ],
   405 => [
     { content: "You may GET from here\nPOST is simply not allowed\nRead the docs again", author: "DevPoet" },
-    { content: "Wrong verb for this door\nNot all methods are allowed\nCheck your allowed list", author: "WebBard" },
+    { content: "Wrong verb for this door\nNot all methods are allowed\nCheck your allowed list", author: "WebBard" }
   ],
   408 => [
     { content: "You took too long, friend\nI gave up waiting for you\nConnect faster please", author: nil },
-    { content: "The silence stretched long\nI waited but you never\nFinished what you start", author: "DevPoet" },
+    { content: "The silence stretched long\nI waited but you never\nFinished what you start", author: "DevPoet" }
   ],
   409 => [
     { content: "Two truths collide here\nThe state you send fights the state\nOne side must give way", author: "WebBard" },
-    { content: "Your edit conflicts\nWith a change already made\nResolve, then retry", author: "DevPoet" },
+    { content: "Your edit conflicts\nWith a change already made\nResolve, then retry", author: "DevPoet" }
   ],
   410 => [
     { content: "It was here before\nNow gone without a return\nDo not look again", author: nil },
-    { content: "Unlike four oh four\nThis one will not come back here\nRemove your bookmark", author: "WebBard" },
+    { content: "Unlike four oh four\nThis one will not come back here\nRemove your bookmark", author: "WebBard" }
   ],
   418 => [
     { content: "Short and stout am I\nBrewing tea is what I do\nWrong tool, check again", author: "Teapot" },
     { content: "Not a server, no\nI am only a teapot\nCoffee? Wrong device", author: "RFC2324" },
-    { content: "Hyper Text Transfer\nProtocol? I make Earl Grey\nCheck your endpoints, friend", author: "DevPoet" },
+    { content: "Hyper Text Transfer\nProtocol? I make Earl Grey\nCheck your endpoints, friend", author: "DevPoet" }
   ],
   422 => [
     { content: "The syntax was fine\nBut semantics failed the check\nMeaning matters more", author: "WebBard" },
-    { content: "I parsed what you sent\nBut logic within it fails\nContent makes no sense", author: "DevPoet" },
+    { content: "I parsed what you sent\nBut logic within it fails\nContent makes no sense", author: "DevPoet" }
   ],
   429 => [
     { content: "Slow down, please calm down\nYou are flooding all my lanes\nWait and try again", author: "RateLimiter" },
     { content: "Fifteen per second\nYou fill all my lanes at once\nBreathe, then come back slow", author: "DevPoet" },
-    { content: "Patience is a gift\nYou have asked too many times\nThe gate closes now", author: "WebBard" },
+    { content: "Patience is a gift\nYou have asked too many times\nThe gate closes now", author: "WebBard" }
   ],
   500 => [
     { content: "It broke inside us\nThe error was not your fault\nWe are looking now", author: "OnCallEng" },
     { content: "The stack trace scrolls long\nDeep within a nil explodes\nPagers start to buzz", author: "DevPoet" },
-    { content: "It worked yesterday\nNow the logs fill up with flames\nBlame the last deploy", author: nil },
+    { content: "It worked yesterday\nNow the logs fill up with flames\nBlame the last deploy", author: nil }
   ],
   502 => [
     { content: "I asked upstream but\nGot nonsense in reply back\nChain of broken links", author: "WebBard" },
-    { content: "The proxy whispers\nTo a service that responds\nIn words I can't read", author: "DevPoet" },
+    { content: "The proxy whispers\nTo a service that responds\nIn words I can't read", author: "DevPoet" }
   ],
   503 => [
     { content: "Down for maintenance\nOr crushed under heavy load\nPlease come back later", author: nil },
     { content: "Too many at once\nThe wheels have ground to a halt\nScaling takes a while", author: "DevPoet" },
-    { content: "The servers are full\nThe hamsters need a break now\nTry again at dawn", author: "WebBard" },
+    { content: "The servers are full\nThe hamsters need a break now\nTry again at dawn", author: "WebBard" }
   ],
   504 => [
     { content: "I asked upstream friend\nAnd waited, and waited, and\nSilence was the gift", author: "DevPoet" },
-    { content: "The upstream is slow\nMy patience has a strict cap\nTimeout fires at last", author: "WebBard" },
-  ],
+    { content: "The upstream is slow\nMy patience has a strict cap\nTimeout fires at last", author: "WebBard" }
+  ]
 }
 
 if haikus_per_code == 0
@@ -208,7 +208,7 @@ else
     "RFC2324"    => User.create!(email: "rfc2324@example.com",    username: "RFC2324",    password: "password123", password_confirmation: "password123"),
     "HaikuBot"   => User.create!(email: "haikubot@example.com",   username: "HaikuBot",   password: "password123", password_confirmation: "password123"),
     "RateLimiter" => User.create!(email: "ratelimiter@example.com", username: "RateLimiter", password: "password123", password_confirmation: "password123"),
-    "OnCallEng"  => User.create!(email: "oncalleng@example.com",  username: "OnCallEng",  password: "password123", password_confirmation: "password123"),
+    "OnCallEng"  => User.create!(email: "oncalleng@example.com",  username: "OnCallEng",  password: "password123", password_confirmation: "password123")
   }
 
   # A fallback user for haikus with no named author
