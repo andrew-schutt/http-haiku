@@ -43,6 +43,7 @@ bin/rails console
 npm run dev      # start dev server on http://localhost:5173
 npm run build    # type-check + production build
 npm run lint     # ESLint
+npm run format   # Prettier auto-format all src files
 npm run test     # Vitest with coverage
 ```
 
@@ -111,10 +112,10 @@ TypeScript is configured with `verbatimModuleSyntax`, so all type-only imports m
 
 ## After making changes
 
-Always run the relevant test suite before committing:
+Always run formatters and the relevant test suite before committing:
 
-- Backend changes: `bundle exec rspec` (from `backend/`)
-- Frontend changes: `npm run test` (from `frontend/`)
+- Backend changes: `bundle exec rubocop -a && bundle exec rspec` (from `backend/`)
+- Frontend changes: `npm run format && npm run test` (from `frontend/`)
 
 ## Key constraints
 
