@@ -268,7 +268,7 @@ fly ssh console  # open a shell on the running instance
 - [ ] Search/filter functionality
 - [ ] Dark mode theme
 - [ ] Haiku collections/favorites
-- [ ] Automated quality checks (CI pipeline: linting, tests, type-checking across backend and frontend)
+- [x] Automated quality checks (CI pipeline: linting, tests, type-checking across backend and frontend)
 
 ## Contributing
 
