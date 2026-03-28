@@ -249,10 +249,10 @@ fly ssh console  # open a shell on the running instance
 
 ## Future Enhancements
 
-- [ ] Edit/delete own haikus
+- [x] Edit/delete own haikus
 - [ ] Admin moderation interface
 - [ ] Search/filter functionality
-- [ ] Social media sharing
+- [x] Social media sharing (copy link)
 - [ ] Dark mode theme
 - [ ] API rate limiting
 - [ ] Haiku collections/favorites
