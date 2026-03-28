@@ -294,6 +294,29 @@
   border-color: #667eea;
 }
 
+.copy-button {
+  background: white;
+  border: 2px solid #e0e0e0;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.copy-button:hover {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.copy-button.copied {
+  background: #48bb78;
+  color: white;
+  border-color: #48bb78;
+}
+
 /* Haiku Form */
 .haiku-form {
   background: white;
@@ -574,4 +597,115 @@
 
 .auth-prompt a:hover {
   text-decoration: underline;
+}
+
+/* Haiku Edit/Delete Actions */
+.haiku-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.haiku-edit-button {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.haiku-edit-button:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.haiku-delete-button {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.haiku-delete-button:hover:not(:disabled) {
+  border-color: #c33;
+  color: #c33;
+}
+
+.haiku-delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.haiku-edit-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-bottom: 0.75rem;
+  transition: border-color 0.2s;
+}
+
+.haiku-edit-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.haiku-edit-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.haiku-save-button {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.haiku-save-button:hover:not(:disabled) {
+  background: #764ba2;
+}
+
+.haiku-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.haiku-cancel-button {
+  background: white;
+  color: #555;
+  border: 2px solid #e0e0e0;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.haiku-cancel-button:hover:not(:disabled) {
+  border-color: #aaa;
+  color: #333;
+}
+
+.haiku-cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

@@ -19,6 +19,7 @@ const mockHttpCodeDetail: HttpCodeDetail = {
       content: "Page not found here\nThe URL you seek is gone\nFour oh four alas",
       author_name: "Ghost Writer",
       vote_count: 8,
+      user_id: 1,
     },
   ],
 };

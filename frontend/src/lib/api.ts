@@ -21,6 +21,7 @@ export interface Haiku {
   content: string;
   author_name: string;
   vote_count: number;
+  user_id: number;
   created_at?: string;
 }
 
@@ -92,6 +93,17 @@ export const haikusApi = {
   getDaily: async (): Promise<DailyHaiku> => {
     const response = await api.get("/api/v1/haikus/daily");
     return response.data.haiku;
+  },
+
+  // Update an existing haiku
+  update: async (haikuId: number, content: string): Promise<Haiku> => {
+    const response = await api.patch(`/api/v1/haikus/${haikuId}`, { haiku: { content } });
+    return response.data.haiku;
+  },
+
+  // Delete a haiku
+  destroy: async (haikuId: number): Promise<void> => {
+    await api.delete(`/api/v1/haikus/${haikuId}`);
   },
 };
 

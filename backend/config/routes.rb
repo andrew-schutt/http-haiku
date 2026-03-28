@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :http_codes, only: [:index, :show], param: :code
 
-      resources :haikus, only: [:create] do
+      resources :haikus, only: [:create, :update, :destroy] do
         collection do
           get :daily
         end

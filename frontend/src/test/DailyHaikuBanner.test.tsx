@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { screen, waitFor, fireEvent, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import DailyHaikuBanner from "../components/DailyHaikuBanner";
 import { renderWithProviders } from "./test-utils";
 import type { DailyHaiku } from "../lib/api";
@@ -9,6 +10,7 @@ const mockDailyHaiku: DailyHaiku = {
   content: "Page not found here\nSearching through empty folders\nSilence greets your call",
   author_name: "Code Poet",
   vote_count: 42,
+  user_id: 1,
   http_code: {
     code: 404,
     description: "Not Found",
@@ -43,4 +45,42 @@ describe("DailyHaikuBanner", () => {
     renderWithProviders(<DailyHaikuBanner haiku={mockDailyHaiku} />);
     expect(screen.getByText(/Haiku of the Day/i)).toBeInTheDocument();
   });
+
+  it("copy button writes correct URL to clipboard and shows Copied! feedback", async () => {
+    const user = userEvent.setup();
+    const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue(undefined);
+    renderWithProviders(<DailyHaikuBanner haiku={mockDailyHaiku} />);
+
+    const copyBtn = screen.getByRole("button", { name: /Copy link/i });
+    await user.click(copyBtn);
+
+    expect(writeTextSpy).toHaveBeenCalledWith(
+      `${window.location.origin}/code/404`
+    );
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /Copied!/i })).toBeInTheDocument();
+    });
+    writeTextSpy.mockRestore();
+  });
+
+  it("Copied! label resets to Copy link after 2 seconds", async () => {
+    vi.useFakeTimers();
+    const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue(undefined);
+    renderWithProviders(<DailyHaikuBanner haiku={mockDailyHaiku} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Copy link/i }));
+    expect(screen.getByRole("button", { name: /Copied!/i })).toBeInTheDocument();
+
+    await act(async () => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(screen.getByRole("button", { name: /Copy link/i })).toBeInTheDocument();
+
+    writeTextSpy.mockRestore();
+    vi.useRealTimers();
+  });
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });

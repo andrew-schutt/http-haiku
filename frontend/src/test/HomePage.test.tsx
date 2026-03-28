@@ -24,6 +24,7 @@ const mockHttpCodes: HttpCode[] = [
       content: "All is well today\nThe request went through just fine\nTwo hundred success",
       author_name: "Happy Poet",
       vote_count: 12,
+      user_id: 1,
     },
   },
   {

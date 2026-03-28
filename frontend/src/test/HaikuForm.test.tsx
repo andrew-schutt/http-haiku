@@ -12,6 +12,7 @@ const mockHaiku: Haiku = {
   content: "Line one\nLine two\nLine three",
   author_name: "testuser",
   vote_count: 0,
+  user_id: 1,
 };
 
 const mockUser: User = {

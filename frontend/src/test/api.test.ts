@@ -9,6 +9,7 @@ const mockHaiku: Haiku = {
   content: "Not found at all\nThe page you seek has vanished\nFour oh four you get",
   author_name: "Test Author",
   vote_count: 5,
+  user_id: 1,
   created_at: "2026-03-24T00:00:00Z",
 };
 

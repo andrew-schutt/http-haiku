@@ -51,7 +51,7 @@ export default function CodeDetailPage() {
         <div className="content-grid">
           <div className="haikus-section">
             <h2>Top Haikus</h2>
-            {httpCode && <HaikuList haikus={httpCode.haikus} />}
+            {httpCode && <HaikuList haikus={httpCode.haikus} code={codeNumber} />}
           </div>
 
           <div className="form-section">

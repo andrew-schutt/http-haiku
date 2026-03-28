@@ -19,6 +19,7 @@ const httpCodeWithHaiku: HttpCode = {
     content: "Line one\nLine two\nLine three",
     author_name: "Test Author",
     vote_count: 5,
+    user_id: 1,
   },
 };
 

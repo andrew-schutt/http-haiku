@@ -124,6 +124,78 @@ RSpec.describe "Api::V1::Haikus", type: :request do
     end
   end
 
+  describe "PATCH /api/v1/haikus/:id" do
+    let!(:other_user) { FactoryBot.create(:user) }
+    let!(:haiku) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", user: user) }
+
+    it "updates haiku content with valid params" do
+      new_content = "Haiku edit test\nNew words to fill seven here\nFinal line done now"
+
+      patch "/api/v1/haikus/#{haiku.id}", params: { haiku: { content: new_content } }, as: :json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json["haiku"]["content"]).to eq(new_content)
+    end
+
+    it "returns 401 when not authenticated" do
+      cookies.delete("_http_haiku_session")
+
+      patch "/api/v1/haikus/#{haiku.id}", params: { haiku: { content: "New content\nLine two here\nLine three done" } }, as: :json
+
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "returns 403 when not the author" do
+      cookies.delete("_http_haiku_session")
+      post "/api/v1/session", params: { session: { email: other_user.email, password: "password123" } }, as: :json
+
+      patch "/api/v1/haikus/#{haiku.id}", params: { haiku: { content: "New content\nLine two here\nLine three done" } }, as: :json
+
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "returns 422 for invalid content (not 3 lines)" do
+      patch "/api/v1/haikus/#{haiku.id}", params: { haiku: { content: "Only one line" } }, as: :json
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = JSON.parse(response.body)
+      expect(json["errors"]).to include("Content must have exactly 3 lines")
+    end
+  end
+
+  describe "DELETE /api/v1/haikus/:id" do
+    let!(:other_user) { FactoryBot.create(:user) }
+    let!(:haiku) { http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", user: user) }
+
+    it "deletes the haiku" do
+      expect {
+        delete "/api/v1/haikus/#{haiku.id}"
+      }.to change(Haiku, :count).by(-1)
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json["message"]).to eq("Haiku deleted")
+    end
+
+    it "returns 401 when not authenticated" do
+      cookies.delete("_http_haiku_session")
+
+      delete "/api/v1/haikus/#{haiku.id}"
+
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "returns 403 when not the author" do
+      cookies.delete("_http_haiku_session")
+      post "/api/v1/session", params: { session: { email: other_user.email, password: "password123" } }, as: :json
+
+      delete "/api/v1/haikus/#{haiku.id}"
+
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
+
   def reset_session!
     cookies.delete("_http_haiku_session")
   end

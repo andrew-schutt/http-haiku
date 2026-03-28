@@ -8,7 +8,7 @@ module Api
             code: code.code,
             description: code.description,
             category: code.category,
-            top_haiku: code.top_haiku&.as_json(only: [:id, :content, :author_name, :vote_count])
+            top_haiku: code.top_haiku&.as_json(only: [:id, :content, :author_name, :vote_count, :user_id])
           }
         end
 
@@ -25,7 +25,7 @@ module Api
             code: http_code.code,
             description: http_code.description,
             category: http_code.category,
-            haikus: top_haikus.as_json(only: [:id, :content, :author_name, :vote_count, :created_at])
+            haikus: top_haikus.as_json(only: [:id, :content, :author_name, :vote_count, :user_id, :created_at])
           }
         }
       end
