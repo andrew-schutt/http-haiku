@@ -54,6 +54,26 @@ RSpec.describe "Api::V1::Sessions", type: :request do
     end
   end
 
+  describe "rate limiting" do
+    it "returns 429 when the login rate limit is exceeded" do
+      allow(Rails.cache).to receive(:increment).and_return(11)
+
+      post "/api/v1/session", params: { session: { email: "test@example.com", password: "password123" } }, as: :json
+
+      expect(response).to have_http_status(:too_many_requests)
+      json = JSON.parse(response.body)
+      expect(json["error"]).to include("Too many login attempts")
+    end
+
+    it "allows requests within the login rate limit" do
+      allow(Rails.cache).to receive(:increment).and_return(10)
+
+      post "/api/v1/session", params: { session: { email: "test@example.com", password: "password123" } }, as: :json
+
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   describe "DELETE /api/v1/session" do
     before do
       post "/api/v1/session", params: { session: { email: "test@example.com", password: "password123" } }, as: :json
