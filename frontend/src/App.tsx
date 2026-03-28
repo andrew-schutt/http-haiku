@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import CodeDetailPage from "./pages/CodeDetailPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import AdminPage from "./pages/AdminPage";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -25,6 +26,7 @@ function App() {
           <Route path="/code/:code" element={<CodeDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

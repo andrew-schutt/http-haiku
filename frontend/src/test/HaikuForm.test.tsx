@@ -19,6 +19,7 @@ const mockUser: User = {
   id: 1,
   email: "test@example.com",
   username: "testuser",
+  is_admin: false,
 };
 
 const server = setupServer(

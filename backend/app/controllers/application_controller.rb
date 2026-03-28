@@ -8,4 +8,8 @@ class ApplicationController < ActionController::API
   def require_authentication
     render json: { error: "Authentication required" }, status: :unauthorized unless current_user
   end
+
+  def require_admin
+    render json: { error: "Forbidden" }, status: :forbidden unless current_user&.is_admin
+  end
 end

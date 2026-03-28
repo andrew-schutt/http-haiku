@@ -32,6 +32,7 @@ export default function Layout({ children }: LayoutProps) {
               {isLoggedIn ? (
                 <>
                   <span className="nav-username">{user?.username}</span>
+                  {user?.is_admin && <Link to="/admin" className="nav-link">Admin</Link>}
                   <button
                     className="nav-logout-button"
                     onClick={() => logoutMutation.mutate()}

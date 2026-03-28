@@ -14,6 +14,7 @@ export interface User {
   id: number;
   email: string;
   username: string;
+  is_admin: boolean;
 }
 
 export interface Haiku {
@@ -131,6 +132,31 @@ export const authApi = {
     const response = await api.get("/api/v1/users/me");
     return response.data.user;
   },
+};
+
+export interface AdminHaiku {
+  id: number;
+  content: string;
+  author_name: string;
+  vote_count: number;
+  created_at: string;
+  http_code: { code: number; description: string };
+  user: { id: number; username: string };
+}
+
+export interface AdminUser {
+  id: number;
+  email: string;
+  username: string;
+  is_admin: boolean;
+  created_at: string;
+}
+
+export const adminApi = {
+  getHaikus: () => api.get<{ haikus: AdminHaiku[] }>("/api/v1/admin/haikus").then(r => r.data.haikus),
+  deleteHaiku: (id: number) => api.delete(`/api/v1/admin/haikus/${id}`),
+  getUsers: () => api.get<{ users: AdminUser[] }>("/api/v1/admin/users").then(r => r.data.users),
+  deleteUser: (id: number) => api.delete(`/api/v1/admin/users/${id}`),
 };
 
 export default api;

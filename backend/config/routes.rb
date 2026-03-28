@@ -22,6 +22,11 @@ Rails.application.routes.draw do
       resources :users, only: [:create]
       get "users/me", to: "users#me", as: :current_user
       resource :session, only: [:create, :destroy]
+
+      namespace :admin do
+        resources :haikus, only: [:index, :destroy]
+        resources :users, only: [:index, :destroy]
+      end
     end
   end
 end

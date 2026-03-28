@@ -4,5 +4,9 @@ FactoryBot.define do
     sequence(:username) { |n| "user#{n}" }
     password { "password123" }
     password_confirmation { "password123" }
+
+    trait :admin do
+      is_admin { true }
+    end
   end
 end
