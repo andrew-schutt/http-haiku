@@ -81,6 +81,30 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
   end
 
+  describe "rate limiting" do
+    let(:reg_params) do
+      { user: { email: "newuser@example.com", username: "newuser", password: "password123", password_confirmation: "password123" } }
+    end
+
+    it "returns 429 when the registration rate limit is exceeded" do
+      allow(Rails.cache).to receive(:increment).and_return(6)
+
+      post "/api/v1/users", params: reg_params, as: :json
+
+      expect(response).to have_http_status(:too_many_requests)
+      json = JSON.parse(response.body)
+      expect(json["error"]).to include("Too many accounts")
+    end
+
+    it "allows requests within the registration rate limit" do
+      allow(Rails.cache).to receive(:increment).and_return(5)
+
+      post "/api/v1/users", params: reg_params, as: :json
+
+      expect(response).to have_http_status(:created)
+    end
+  end
+
   describe "GET /api/v1/users/me" do
     let!(:user) { FactoryBot.create(:user) }
 

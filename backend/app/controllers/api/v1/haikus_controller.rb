@@ -4,6 +4,8 @@ module Api
       before_action :require_authentication, only: [:create, :update, :destroy]
       before_action :set_haiku, only: [:update, :destroy, :vote]
       before_action :require_ownership, only: [:update, :destroy]
+      before_action :throttle_haiku_create, only: :create
+      before_action :throttle_vote, only: :vote
 
       def create
         http_code = HttpCode.find_by!(code: haiku_params[:http_code])
@@ -75,6 +77,20 @@ module Api
       end
 
       private
+
+      def throttle_haiku_create
+        count = Rails.cache.increment("rl:haiku_create:#{current_user.id}", 1, expires_in: 1.hour) || 1
+        if count > 10
+          render json: { error: "Too many haikus submitted. Please try again later." }, status: :too_many_requests
+        end
+      end
+
+      def throttle_vote
+        count = Rails.cache.increment("rl:vote:#{request.remote_ip}", 1, expires_in: 1.hour) || 1
+        if count > 30
+          render json: { error: "Too many votes cast. Please try again later." }, status: :too_many_requests
+        end
+      end
 
       def set_haiku
         @haiku = Haiku.find(params[:id])

@@ -196,6 +196,52 @@ RSpec.describe "Api::V1::Haikus", type: :request do
     end
   end
 
+  describe "rate limiting" do
+    let(:valid_content) { "An old silent pond\nA frog jumps into the pond\nSplash silence again" }
+
+    describe "haiku creation" do
+      it "returns 429 when the submission rate limit is exceeded" do
+        allow(Rails.cache).to receive(:increment).and_return(11)
+
+        post "/api/v1/haikus", params: { haiku: { http_code: 404, content: valid_content } }, as: :json
+
+        expect(response).to have_http_status(:too_many_requests)
+        json = JSON.parse(response.body)
+        expect(json["error"]).to include("Too many haikus")
+      end
+
+      it "allows requests within the submission rate limit" do
+        allow(Rails.cache).to receive(:increment).and_return(10)
+
+        post "/api/v1/haikus", params: { haiku: { http_code: 404, content: valid_content } }, as: :json
+
+        expect(response).to have_http_status(:created)
+      end
+    end
+
+    describe "voting" do
+      let!(:haiku) { http_code.haikus.create!(content: valid_content, user: user) }
+
+      it "returns 429 when the vote rate limit is exceeded" do
+        allow(Rails.cache).to receive(:increment).and_return(31)
+
+        post "/api/v1/haikus/#{haiku.id}/vote"
+
+        expect(response).to have_http_status(:too_many_requests)
+        json = JSON.parse(response.body)
+        expect(json["error"]).to include("Too many votes")
+      end
+
+      it "allows requests within the vote rate limit" do
+        allow(Rails.cache).to receive(:increment).and_return(30)
+
+        post "/api/v1/haikus/#{haiku.id}/vote"
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
   def reset_session!
     cookies.delete("_http_haiku_session")
   end

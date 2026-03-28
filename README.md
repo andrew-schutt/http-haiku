@@ -254,7 +254,7 @@ fly ssh console  # open a shell on the running instance
 - [ ] Search/filter functionality
 - [x] Social media sharing (copy link)
 - [ ] Dark mode theme
-- [ ] API rate limiting
+- [x] API rate limiting
 - [ ] Haiku collections/favorites
 
 ## Contributing
