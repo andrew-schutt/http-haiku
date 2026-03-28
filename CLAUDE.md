@@ -69,7 +69,9 @@ config.middleware.use ActionDispatch::Session::CookieStore, key: "_http_haiku_se
 
 **Authentication**: Users register via `POST /api/v1/users` and log in via `POST /api/v1/session`. The session stores `session[:user_id]`. `GET /api/v1/users/me` returns the current user. Submitting a haiku (`POST /api/v1/haikus`) requires authentication; the `author_name` is always set from `current_user.username`.
 
-**Routes**: All API routes are namespaced under `/api/v1`. The `http_codes` resource uses `only: [:index, :show]` with `param: :code` so the route param is the HTTP status integer (e.g. `/api/v1/http_codes/404`), not the record id. The `haikus` resource uses `only: [:create]` with a `get :daily` collection route and a `post :vote` member route. The frontend route for a code detail page is `/code/:code` (singular, no trailing 's').
+**Routes**: All API routes are namespaced under `/api/v1`. The `http_codes` resource uses `only: [:index, :show]` with `param: :code` so the route param is the HTTP status integer (e.g. `/api/v1/http_codes/404`), not the record id. The `haikus` resource uses `only: [:create, :update, :destroy]` with a `get :daily` collection route and a `post :vote` member route. The frontend route for a code detail page is `/code/:code` (singular, no trailing 's').
+
+**Admin**: Admin routes live under `/api/v1/admin` and are protected by a `require_admin` before_action that checks `current_user.is_admin?`. The `is_admin` boolean column on `users` defaults to false and must be set manually in the Rails console. Admin controllers live in `app/controllers/api/v1/admin/`. The frontend `AdminPage` (`src/pages/AdminPage.tsx`) is accessible at `/admin` and is only rendered for authenticated admin users.
 
 **CORS**: Configured in `config/initializers/cors.rb` to allow `localhost:5173` with `credentials: true` (required for session cookies to work cross-origin).
 
@@ -87,7 +89,7 @@ TypeScript is configured with `verbatimModuleSyntax`, so all type-only imports m
 
 ### Testing
 
-- Request specs cover: http_codes (index/show), haikus (create/vote/daily), users (create/me), sessions (create/destroy)
+- Request specs cover: http_codes (index/show), haikus (create/update/destroy/vote/daily), users (create/me), sessions (create/destroy), admin haikus (index/destroy), admin users (index/destroy)
 - Model specs cover: Haiku, HttpCode, Vote, User validations and associations
 - Services spec covers HaikuCheck syllable validation
 - `ActiveRecord::RecordNotFound` is caught by Rails middleware in request specs — test with `have_http_status(:not_found)`, not `raise_error`

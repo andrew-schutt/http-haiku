@@ -5,11 +5,14 @@ A web application where users can submit and vote on haikus written for specific
 ## Features
 
 - 📝 Submit haikus for any HTTP status code (requires account; must follow 5-7-5 syllable structure)
+- ✏️ Edit or delete your own haikus
 - ❤️ Vote on your favorite haikus (once per session, no account required)
 - 🎯 View top 20 haikus for each status code
 - ✨ Daily haiku feature — a different haiku is highlighted each day
 - 🔍 Browse all HTTP codes grouped by category
+- 🔗 Share haikus via copy-link
 - 🎨 Clean, modern UI with responsive design
+- 🛡️ Admin moderation interface for managing haikus and users
 
 ## Technology Stack
 
@@ -122,12 +125,20 @@ docker-compose up
 GET    /api/v1/http_codes           # All codes with top haiku each
 GET    /api/v1/http_codes/:code     # Specific code with top 20 haikus
 POST   /api/v1/haikus               # Submit new haiku (auth required)
+PATCH  /api/v1/haikus/:id           # Edit own haiku (auth required)
+DELETE /api/v1/haikus/:id           # Delete own haiku (auth required)
 GET    /api/v1/haikus/daily         # Haiku of the day
 POST   /api/v1/haikus/:id/vote      # Upvote a haiku (session-based)
 POST   /api/v1/users                # Sign up
 POST   /api/v1/session              # Log in
 DELETE /api/v1/session              # Log out
 GET    /api/v1/users/me             # Current user (auth required)
+
+# Admin (requires is_admin: true on the current user)
+GET    /api/v1/admin/haikus         # All haikus (admin only)
+DELETE /api/v1/admin/haikus/:id     # Delete any haiku (admin only)
+GET    /api/v1/admin/users          # All users (admin only)
+DELETE /api/v1/admin/users/:id      # Delete any user (admin only)
 ```
 
 ### Example API Request
@@ -157,6 +168,7 @@ curl -X POST http://localhost:3000/api/v1/haikus/1/vote \
 - `email` (text, unique, normalized to lowercase) - User email
 - `username` (text, unique, 2–30 chars) - Display name
 - `password_digest` (text) - bcrypt password hash
+- `is_admin` (boolean, default false) - Admin flag
 
 ### http_codes
 - `code` (integer, unique) - HTTP status code
@@ -250,12 +262,13 @@ fly ssh console  # open a shell on the running instance
 ## Future Enhancements
 
 - [x] Edit/delete own haikus
-- [ ] Admin moderation interface
-- [ ] Search/filter functionality
+- [x] Admin moderation interface
 - [x] Social media sharing (copy link)
-- [ ] Dark mode theme
 - [x] API rate limiting
+- [ ] Search/filter functionality
+- [ ] Dark mode theme
 - [ ] Haiku collections/favorites
+- [ ] Automated quality checks (CI pipeline: linting, tests, type-checking across backend and frontend)
 
 ## Contributing
 
