@@ -109,6 +109,13 @@ TypeScript is configured with `verbatimModuleSyntax`, so all type-only imports m
 - Use `find` (raises) vs `find_by` (returns nil) intentionally — prefer `find` when the record must exist
 - Keep callbacks (`before_save`, `after_create`, etc.) minimal and side-effect-free; prefer explicit service calls for complex logic
 
+## After making changes
+
+Always run the relevant test suite before committing:
+
+- Backend changes: `bundle exec rspec` (from `backend/`)
+- Frontend changes: `npm run test` (from `frontend/`)
+
 ## Key constraints
 
 - `NEVER modify the Gemfile, Rails configuration or initializers, nor RSpec configuration or test support files.`
