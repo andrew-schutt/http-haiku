@@ -1,5 +1,7 @@
 # HTTP Haiku
 
+[![CI](https://github.com/andrew-schutt/http-haiku/actions/workflows/ci.yml/badge.svg)](https://github.com/andrew-schutt/http-haiku/actions/workflows/ci.yml)
+
 A web application where users can submit and vote on haikus written for specific HTTP status codes. Built with Rails 8 API and React + TypeScript.
 
 ## Features
