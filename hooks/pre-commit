@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# pre-commit hook — runs tests for whichever side of the repo changed.
+# Install once per clone: git config core.hooksPath hooks
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+STAGED=$(git diff --cached --name-only)
+
+run_backend=false
+run_frontend=false
+
+while IFS= read -r file; do
+  case "$file" in
+    backend/*) run_backend=true ;;
+    frontend/*) run_frontend=true ;;
+  esac
+done <<< "$STAGED"
+
+if $run_backend; then
+  echo "==> Backend changes detected: running RuboCop + RSpec"
+  cd "$REPO_ROOT/backend"
+  bundle exec rubocop --format progress
+  bundle exec rspec
+  cd "$REPO_ROOT"
+fi
+
+if $run_frontend; then
+  echo "==> Frontend changes detected: running lint + Vitest"
+  cd "$REPO_ROOT/frontend"
+  npm run lint
+  npm run test
+  cd "$REPO_ROOT"
+fi

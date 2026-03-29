@@ -55,6 +55,7 @@ http-haiku/
 │   │   └── lib/
 │   └── public/
 ├── scripts/
+│   ├── setup-dev.sh
 │   └── setup-fly.sh
 ├── fly.toml
 ├── Dockerfile
@@ -82,29 +83,16 @@ brew services start postgresql@16
 psql --version
 ```
 
-#### 2. Setup Backend
+#### 2. Run dev setup
 ```bash
-cd backend
-
-# Install dependencies
-bundle install
-
-# Setup database
-bin/rails db:create db:migrate db:seed
-
-# Start Rails server (runs on http://localhost:3000)
-bin/rails server
+./scripts/setup-dev.sh
 ```
+This installs backend and frontend dependencies, sets up the database, and activates the pre-commit hook (which runs RuboCop + RSpec for backend changes and ESLint + Vitest for frontend changes).
 
-#### 3. Setup Frontend (in a new terminal)
+#### 3. Start the servers (two terminals)
 ```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start dev server (runs on http://localhost:5173)
-npm run dev
+cd backend && bin/rails server   # http://localhost:3000
+cd frontend && npm run dev       # http://localhost:5173
 ```
 
 #### 4. Open Application
