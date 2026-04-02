@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#1a1a2e"/>
+
+  <!-- Accent border top -->
+  <rect x="0" y="0" width="1200" height="6" fill="#e94560"/>
+
+  <!-- Site name -->
+  <text x="60" y="72" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="bold" fill="#e94560" letter-spacing="3">HTTP HAIKU</text>
+
+  <!-- HTTP code -->
+  <text x="600" y="200" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="96" font-weight="bold" fill="#e94560"><%= h(@http_code.code.to_s) %></text>
+
+  <!-- HTTP description -->
+  <text x="600" y="255" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" fill="#a0a0b8" letter-spacing="2"><%= h(@http_code.description.upcase) %></text>
+
+  <!-- Divider -->
+  <line x1="400" y1="285" x2="800" y2="285" stroke="#e94560" stroke-width="1" opacity="0.4"/>
+
+  <% if @haiku %>
+    <% lines = @haiku.content.split("\n") %>
+    <% lines.each_with_index do |line, i| %>
+    <text x="600" y="<%= 345 + (i * 64) %>" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="40" fill="#ffffff"><%= h(line) %></text>
+    <% end %>
+
+    <!-- Author -->
+    <text x="600" y="570" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="24" fill="#6b6b8a">— <%= h(@haiku.author_name) %></text>
+  <% else %>
+    <text x="600" y="385" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="36" fill="#6b6b8a">No haikus yet</text>
+  <% end %>
+</svg>

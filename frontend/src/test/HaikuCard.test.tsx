@@ -101,7 +101,7 @@ describe('HaikuCard', () => {
     const copyBtn = screen.getByRole('button', { name: /Copy link/i });
     await user.click(copyBtn);
 
-    expect(writeTextSpy).toHaveBeenCalledWith(`${window.location.origin}/code/500`);
+    expect(writeTextSpy).toHaveBeenCalledWith(`${window.location.origin}/code/500?haiku=${mockHaiku.id}`);
     await waitFor(() => {
       expect(screen.getByRole('button', { name: /Copied!/i })).toBeInTheDocument();
     });

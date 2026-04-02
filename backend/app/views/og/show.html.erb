@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTTP <%= @http_code.code %> <%= @http_code.description %> — HTTP Haiku</title>
+  <meta name="description" content="<%= @haiku&.content&.gsub("\n", " / ") %>">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="HTTP Haiku">
+  <meta property="og:title" content="HTTP <%= @http_code.code %> — <%= @http_code.description %>">
+  <meta property="og:description" content="<%= @haiku&.content&.gsub("\n", " / ") %>">
+  <meta property="og:image" content="<%= request.base_url %>/og/code/<%= @http_code.code %><%= @haiku ? "?haiku=#{@haiku.id}" : "" %>">
+  <meta property="og:url" content="<%= request.base_url %>/code/<%= @http_code.code %><%= @haiku ? "?haiku=#{@haiku.id}" : "" %>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HTTP <%= @http_code.code %> — <%= @http_code.description %>">
+  <meta name="twitter:description" content="<%= @haiku&.content&.gsub("\n", " / ") %>">
+  <meta name="twitter:image" content="<%= request.base_url %>/og/code/<%= @http_code.code %><%= @haiku ? "?haiku=#{@haiku.id}" : "" %>">
+  <meta http-equiv="refresh" content="0;url=/code/<%= @http_code.code %>">
+</head>
+<body></body>
+</html>

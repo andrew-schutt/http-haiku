@@ -29,4 +29,13 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # OG image generation endpoint (must come before the SPA catch-all)
+  get "og/code/:code", to: "og#image"
+
+  # Code detail page: bot-detection serves OG meta HTML; browsers get the SPA
+  get "code/:code", to: "og#show"
+
+  # SPA catch-all: serve index.html for all other HTML requests
+  get "*path", to: "spa#index", constraints: ->(req) { req.format.html? || req.format == Mime::ALL }
 end

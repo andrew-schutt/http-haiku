@@ -22,7 +22,7 @@ export default function HaikuCard({ haiku, code }: HaikuCardProps) {
   const isOwner = user?.id === haiku.user_id;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/code/${code}`);
+    navigator.clipboard.writeText(`${window.location.origin}/code/${code}?haiku=${haiku.id}`);
     setHasCopied(true);
     setTimeout(() => setHasCopied(false), 2000);
   };

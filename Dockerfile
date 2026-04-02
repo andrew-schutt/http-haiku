@@ -26,6 +26,7 @@ RUN apt-get update -qq && \
     libpq-dev \
     postgresql-client \
     curl \
+    librsvg2-bin \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

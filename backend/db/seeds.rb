@@ -72,7 +72,45 @@ http_codes_data = [
   { code: 507, description: "Insufficient Storage", category: "server_error" },
   { code: 508, description: "Loop Detected", category: "server_error" },
   { code: 510, description: "Not Extended", category: "server_error" },
-  { code: 511, description: "Network Authentication Required", category: "server_error" }
+  { code: 511, description: "Network Authentication Required", category: "server_error" },
+
+  # Unofficial / Vendor-Specific Codes
+
+  # 2xx Unofficial
+  { code: 218, description: "This Is Fine", category: "success" },
+
+  # 4xx Unofficial
+  { code: 419, description: "Page Expired", category: "client_error" },
+  { code: 420, description: "Enhance Your Calm", category: "client_error" },
+  { code: 430, description: "Request Header Fields Too Large", category: "client_error" },
+  { code: 440, description: "Login Time-out", category: "client_error" },
+  { code: 444, description: "No Response", category: "client_error" },
+  { code: 449, description: "Retry With", category: "client_error" },
+  { code: 450, description: "Blocked by Windows Parental Controls", category: "client_error" },
+  { code: 460, description: "Client Closed Connection", category: "client_error" },
+  { code: 463, description: "Too Many Forwarded IP Addresses", category: "client_error" },
+  { code: 494, description: "Request Header Too Large", category: "client_error" },
+  { code: 495, description: "SSL Certificate Error", category: "client_error" },
+  { code: 496, description: "SSL Certificate Required", category: "client_error" },
+  { code: 497, description: "HTTP Request Sent to HTTPS Port", category: "client_error" },
+  { code: 498, description: "Invalid Token", category: "client_error" },
+  { code: 499, description: "Client Closed Request", category: "client_error" },
+
+  # 5xx Unofficial
+  { code: 509, description: "Bandwidth Limit Exceeded", category: "server_error" },
+  { code: 520, description: "Web Server Returned an Unknown Error", category: "server_error" },
+  { code: 521, description: "Web Server Is Down", category: "server_error" },
+  { code: 522, description: "Connection Timed Out", category: "server_error" },
+  { code: 523, description: "Origin Is Unreachable", category: "server_error" },
+  { code: 524, description: "A Timeout Occurred", category: "server_error" },
+  { code: 525, description: "SSL Handshake Failed", category: "server_error" },
+  { code: 526, description: "Invalid SSL Certificate", category: "server_error" },
+  { code: 527, description: "Railgun Error", category: "server_error" },
+  { code: 529, description: "Site is Overloaded", category: "server_error" },
+  { code: 530, description: "Site is Frozen", category: "server_error" },
+  { code: 561, description: "Unauthorized", category: "server_error" },
+  { code: 598, description: "Network Read Timeout Error", category: "server_error" },
+  { code: 599, description: "Network Connect Timeout Error", category: "server_error" }
 ]
 
 puts "Seeding HTTP status codes..."
