@@ -24,6 +24,7 @@ export interface Haiku {
   vote_count: number;
   user_id: number;
   created_at?: string;
+  has_voted?: boolean;
 }
 
 export interface HttpCode {

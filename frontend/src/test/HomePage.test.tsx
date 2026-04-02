@@ -200,7 +200,7 @@ describe('HomePage', () => {
 
     act(() => {
       intersectionCallback?.(
-        [{ isIntersecting: true, target: section } as IntersectionObserverEntry],
+        [{ isIntersecting: true, target: section } as unknown as IntersectionObserverEntry],
         {} as IntersectionObserver
       );
     });
@@ -210,7 +210,7 @@ describe('HomePage', () => {
     // Non-intersecting entries should not change the active category
     act(() => {
       intersectionCallback?.(
-        [{ isIntersecting: false, target: section } as IntersectionObserverEntry],
+        [{ isIntersecting: false, target: section } as unknown as IntersectionObserverEntry],
         {} as IntersectionObserver
       );
     });

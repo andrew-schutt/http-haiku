@@ -13,7 +13,7 @@ interface HaikuCardProps {
 export default function HaikuCard({ haiku, code }: HaikuCardProps) {
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const [hasVoted, setHasVoted] = useState(false);
+  const [hasVoted, setHasVoted] = useState(haiku.has_voted ?? false);
   const [hasCopied, setHasCopied] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(haiku.content);

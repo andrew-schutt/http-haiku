@@ -51,7 +51,10 @@ module Api
 
         render json: {
           haiku: haiku.as_json(only: [ :id, :content, :author_name, :vote_count, :user_id ])
-                    .merge(http_code: haiku.http_code.as_json(only: [ :code, :description ]))
+                    .merge(
+                      http_code: haiku.http_code.as_json(only: [ :code, :description ]),
+                      has_voted: voted_haiku_ids.include?(haiku.id)
+                    )
         }, status: :ok
       end
 
@@ -72,6 +75,7 @@ module Api
 
           render json: {
             haiku: @haiku.reload.as_json(only: [ :id, :content, :author_name, :vote_count, :user_id ])
+                               .merge(has_voted: true)
           }, status: :ok
         end
       end
