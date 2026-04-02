@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
+import { screen, waitFor, act } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import HomePage from '../pages/HomePage';
@@ -62,9 +62,26 @@ const server = setupServer(
   })
 );
 
-beforeAll(() => server.listen());
+let intersectionCallback: IntersectionObserverCallback | null = null;
+
+beforeAll(() => {
+  server.listen();
+  vi.stubGlobal(
+    'IntersectionObserver',
+    class {
+      constructor(cb: IntersectionObserverCallback) {
+        intersectionCallback = cb;
+      }
+      observe = vi.fn();
+      disconnect = vi.fn();
+    }
+  );
+});
 afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+afterAll(() => {
+  server.close();
+  vi.unstubAllGlobals();
+});
 
 describe('HomePage', () => {
   it('renders loading state initially', () => {
@@ -157,6 +174,50 @@ describe('HomePage', () => {
     });
 
     expect(screen.getByText(/HTTP 200 — OK/)).toBeInTheDocument();
+  });
+
+  it('renders the category navigation bar after data loads', async () => {
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => {
+      expect(screen.getByRole('navigation', { name: 'Jump to category' })).toBeInTheDocument();
+    });
+
+    expect(screen.getByRole('button', { name: '1xx' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '5xx' })).toBeInTheDocument();
+  });
+
+  it('highlights the active category when a section intersects', async () => {
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: '3xx' })).toBeInTheDocument();
+    });
+
+    const section = document.createElement('section');
+    section.id = 'section-redirection';
+    document.body.appendChild(section);
+
+    act(() => {
+      intersectionCallback?.(
+        [{ isIntersecting: true, target: section } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
+    });
+
+    expect(screen.getByRole('button', { name: '3xx' })).toHaveClass('active');
+
+    // Non-intersecting entries should not change the active category
+    act(() => {
+      intersectionCallback?.(
+        [{ isIntersecting: false, target: section } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
+    });
+
+    expect(screen.getByRole('button', { name: '3xx' })).toHaveClass('active');
+
+    document.body.removeChild(section);
   });
 
   it('groups multiple codes under the same category correctly', async () => {

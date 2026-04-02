@@ -1,9 +1,21 @@
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { HttpCode } from '../lib/api';
 import { httpCodesApi, haikusApi } from '../lib/api';
 import HttpCodeCard from '../components/HttpCodeCard';
 import DailyHaikuBanner from '../components/DailyHaikuBanner';
+import CategoryNav from '../components/CategoryNav';
 import Layout from '../components/Layout';
+
+const categoryOrder = ['informational', 'success', 'redirection', 'client_error', 'server_error'];
+
+const categoryTitles: Record<string, string> = {
+  informational: '1xx Informational',
+  success: '2xx Success',
+  redirection: '3xx Redirection',
+  client_error: '4xx Client Error',
+  server_error: '5xx Server Error',
+};
 
 export default function HomePage() {
   const {
@@ -20,6 +32,30 @@ export default function HomePage() {
     queryFn: haikusApi.getDaily,
     retry: false,
   });
+
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!httpCodes) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveCategory(entry.target.id.replace('section-', ''));
+          }
+        });
+      },
+      { rootMargin: '-10% 0px -80% 0px' }
+    );
+
+    categoryOrder.forEach((category) => {
+      const el = document.getElementById(`section-${category}`);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [httpCodes]);
 
   if (isLoading) {
     return (
@@ -49,20 +85,11 @@ export default function HomePage() {
     {} as Record<string, HttpCode[]>
   );
 
-  const categoryTitles: Record<string, string> = {
-    informational: '1xx Informational',
-    success: '2xx Success',
-    redirection: '3xx Redirection',
-    client_error: '4xx Client Error',
-    server_error: '5xx Server Error',
-  };
-
-  const categoryOrder = ['informational', 'success', 'redirection', 'client_error', 'server_error'];
-
   return (
     <Layout>
       <div className="home-page">
         {dailyHaiku && <DailyHaikuBanner haiku={dailyHaiku} />}
+        <CategoryNav activeCategory={activeCategory} />
         <div className="intro">
           <p className="tagline">
             Explore HTTP status codes through the art of haiku. Vote for your favorites or submit
@@ -75,7 +102,7 @@ export default function HomePage() {
           if (!codes || codes.length === 0) return null;
 
           return (
-            <section key={category} className="category-section">
+            <section key={category} id={`section-${category}`} className="category-section">
               <h2 className="category-title">{categoryTitles[category]}</h2>
               <div className="http-codes-grid">
                 {codes.map((code) => (
