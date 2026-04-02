@@ -21,7 +21,7 @@ module Api
         else
           render json: {
             errors: haiku.errors.full_messages
-          }, status: :unprocessable_entity
+          }, status: :unprocessable_content
         end
       end
 
@@ -33,7 +33,7 @@ module Api
         else
           render json: {
             errors: @haiku.errors.full_messages
-          }, status: :unprocessable_entity
+          }, status: :unprocessable_content
         end
       end
 
@@ -63,7 +63,7 @@ module Api
         if existing_vote
           render json: {
             error: "You have already voted on this haiku"
-          }, status: :unprocessable_entity
+          }, status: :unprocessable_content
         else
           @haiku.votes.create!(
             session_id: voter_token,

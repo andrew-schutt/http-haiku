@@ -50,7 +50,7 @@ RSpec.describe "Api::V1::Haikus", type: :request do
 
       post "/api/v1/haikus", params: valid_params, as: :json
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
       json = JSON.parse(response.body)
       expect(json["errors"]).to include("Content must have exactly 3 lines")
     end
@@ -61,7 +61,7 @@ RSpec.describe "Api::V1::Haikus", type: :request do
 
       post "/api/v1/haikus", params: valid_params, as: :json
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
       json = JSON.parse(response.body)
       expect(json["errors"].first).to include("5-7-5")
       expect(json["errors"].first).to include("line 1")
@@ -96,7 +96,7 @@ RSpec.describe "Api::V1::Haikus", type: :request do
 
       # Second vote from same session
       post "/api/v1/haikus/#{haiku.id}/vote"
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
 
       json = JSON.parse(response.body)
       expect(json["error"]).to include("already voted")
@@ -158,7 +158,7 @@ RSpec.describe "Api::V1::Haikus", type: :request do
     it "returns 422 for invalid content (not 3 lines)" do
       patch "/api/v1/haikus/#{haiku.id}", params: { haiku: { content: "Only one line" } }, as: :json
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
       json = JSON.parse(response.body)
       expect(json["errors"]).to include("Content must have exactly 3 lines")
     end

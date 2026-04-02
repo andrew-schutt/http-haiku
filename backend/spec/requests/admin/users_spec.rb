@@ -46,7 +46,7 @@ RSpec.describe "Admin Users", type: :request do
 
       it "returns 422 when trying to delete self" do
         delete "/api/v1/admin/users/#{admin.id}"
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         json = JSON.parse(response.body)
         expect(json["error"]).to eq("Cannot delete yourself")
       end

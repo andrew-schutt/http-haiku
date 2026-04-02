@@ -9,7 +9,7 @@ class Api::V1::Admin::UsersController < ApplicationController
 
   def destroy
     user = User.find(params[:id])
-    render json: { error: "Cannot delete yourself" }, status: :unprocessable_entity and return if user == current_user
+    render json: { error: "Cannot delete yourself" }, status: :unprocessable_content and return if user == current_user
     user.destroy!
     head :no_content
   end

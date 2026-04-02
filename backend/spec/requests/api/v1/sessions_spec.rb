@@ -117,7 +117,7 @@ RSpec.describe "Api::V1::Sessions", type: :request do
 
       # Try to vote again — should be blocked (same voter_token preserved)
       post "/api/v1/haikus/#{haiku.id}/vote"
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
       json = JSON.parse(response.body)
       expect(json["error"]).to include("already voted")
     end
