@@ -4,6 +4,7 @@ import { httpCodesApi } from '../lib/api';
 import Layout from '../components/Layout';
 import HaikuList from '../components/HaikuList';
 import HaikuForm from '../components/HaikuForm';
+import CarbonAd from '../components/CarbonAd';
 
 export default function CodeDetailPage() {
   const { code } = useParams<{ code: string }>();
@@ -62,7 +63,10 @@ export default function CodeDetailPage() {
             {httpCode && <HaikuList haikus={httpCode.haikus} code={codeNumber} />}
           </div>
 
-          <div className="form-section">{codeNumber && <HaikuForm httpCode={codeNumber} />}</div>
+          <div className="form-section">
+            {codeNumber && <HaikuForm httpCode={codeNumber} />}
+            <CarbonAd />
+          </div>
         </div>
       </div>
     </Layout>
