@@ -40,9 +40,9 @@ describe('Layout', () => {
     expect(screen.getByTestId('child')).toBeInTheDocument();
   });
 
-  it('renders footer with copyright text', async () => {
+  it('renders footer with built by link', async () => {
     renderWithProviders(<Layout>content</Layout>);
-    expect(screen.getByText(/2026 HTTP Haiku/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Andrew Schutt' })).toBeInTheDocument();
   });
 
   it('shows Login and Sign up links when unauthenticated', async () => {

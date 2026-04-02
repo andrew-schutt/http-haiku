@@ -64,7 +64,27 @@ export default function Layout({ children }: LayoutProps) {
       </main>
       <footer className="footer">
         <div className="container">
-          <p>&copy; 2026 HTTP Haiku. Share your code poetry.</p>
+          <p>
+            Built by{' '}
+            <a
+              href="https://andrew-schutt.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link"
+            >
+              Andrew Schutt
+            </a>
+          </p>
+          <p className="footer-links">
+            <a
+              href="https://github.com/andrew-schutt/http-haiku"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link"
+            >
+              GitHub
+            </a>
+          </p>
         </div>
       </footer>
     </div>
