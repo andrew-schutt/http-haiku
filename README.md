@@ -249,16 +249,51 @@ fly ssh console  # open a shell on the running instance
 5. **Counter cache**: Optimized vote counting with `counter_cache`
 6. **Monorepo structure**: Single repository for easier development
 
+## Planned Features
+
+### Persistent Vote State
+Currently, the "voted" state on haiku cards is stored in React component state and resets on page refresh. The fix is to store voted haiku IDs in `localStorage` keyed by the `voter_token` UUID (already available in the session cookie). Returning users would see their votes preserved across sessions without requiring an account.
+
+### Shareable Haiku Cards (Open Graph)
+Each haiku needs a proper OG image so that sharing a `/code/:code` URL in Slack, Twitter, or iMessage renders a rich preview card — haiku text, HTTP code, and the site name — rather than a bare link. A server-side image generation route (e.g. using a headless canvas or a service like `@vercel/og`) would auto-generate a card per haiku. This is the single highest-leverage virality feature: every "Copy link" click becomes an ad.
+
+### User Profiles
+A public profile page at `/user/:username` showing:
+- All haikus the poet has submitted, sorted by votes
+- Total votes received across all their haikus
+- Submission count and member-since date
+
+Authors would have a reason to share their profile link; readers would have a way to follow a voice they enjoy.
+
+### Leaderboards
+A `/leaderboard` page with multiple tabs:
+- **Top haikus** — highest vote counts, filterable by time period (this week / all time)
+- **Top poets** — users ranked by total votes received
+- **Most active codes** — HTTP codes with the most submissions
+
+A leaderboard is inherently linkable ("look at the 418 wall of fame") and gives competitive submitters a reason to return and check standings.
+
+### Random Code Button
+A "Surprise me" button on the homepage that navigates to a random HTTP code's detail page. Discovery through randomness is an underrated mechanic — stumbling onto a great haiku for a code you'd never thought about is a delightful experience the current grid doesn't create.
+
+### Poet Streaks
+Track consecutive days a user has submitted at least one haiku. Display the current streak and longest streak on the user's profile. Loss aversion is a proven retention driver — a visible streak gives poets a daily reason to return and write before midnight.
+
 ## Future Enhancements
 
 - [x] Edit/delete own haikus
 - [x] Admin moderation interface
 - [x] Social media sharing (copy link)
 - [x] API rate limiting
-- [ ] Search/filter functionality
-- [ ] Dark mode theme
-- [ ] Haiku collections/favorites
 - [x] Automated quality checks (CI pipeline: linting, tests, type-checking across backend and frontend)
+- [ ] Persistent vote state across page loads
+- [ ] Shareable haiku cards with Open Graph images
+- [ ] User profile pages
+- [ ] Leaderboards (top haikus, top poets, most active codes)
+- [ ] Random code discovery button
+- [ ] Poet streaks and submission tracking
+- [ ] Search/filter HTTP codes
+- [ ] Dark mode theme
 
 ## Contributing
 
