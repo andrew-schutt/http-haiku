@@ -255,7 +255,7 @@ fly ssh console  # open a shell on the running instance
 Currently, the "voted" state on haiku cards is stored in React component state and resets on page refresh. The fix is to store voted haiku IDs in `localStorage` keyed by the `voter_token` UUID (already available in the session cookie). Returning users would see their votes preserved across sessions without requiring an account.
 
 ### Shareable Haiku Cards (Open Graph)
-Each haiku needs a proper OG image so that sharing a `/code/:code` URL in Slack, Twitter, or iMessage renders a rich preview card — haiku text, HTTP code, and the site name — rather than a bare link. A server-side image generation route (e.g. using a headless canvas or a service like `@vercel/og`) would auto-generate a card per haiku. This is the single highest-leverage virality feature: every "Copy link" click becomes an ad.
+Each haiku needs a proper OG image so that sharing a `/code/:code` URL in Slack, Twitter, or iMessage renders a rich preview card — haiku text, HTTP code, and the site name — rather than a bare link. A server-side image generation route (e.g. using a headless canvas or a service like `@vercel/og`) would auto-generate a card per haiku. This is the single highest-leverage virality feature: every "Copy link" click becomes a shareable moment.
 
 ### User Profiles
 A public profile page at `/user/:username` showing:
@@ -292,7 +292,7 @@ Track consecutive days a user has submitted at least one haiku. Display the curr
 - [ ] Leaderboards (top haikus, top poets, most active codes)
 - [ ] Random code discovery button
 - [ ] Poet streaks and submission tracking
-- [ ] Search/filter HTTP codes
+- [x] Search/filter HTTP codes
 - [ ] Dark mode theme
 
 ## Contributing
