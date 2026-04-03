@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import type { Haiku } from '../lib/api';
 import { haikusApi } from '../lib/api';
 import { useState } from 'react';
@@ -128,7 +129,9 @@ export default function HaikuCard({ haiku, code }: HaikuCardProps) {
     <div className="haiku-card">
       <pre className="haiku-content">{haiku.content}</pre>
       <div className="haiku-footer">
-        <span className="author">— {haiku.author_name}</span>
+        <Link to={`/user/${haiku.author_name}`} className="author author-link">
+          — {haiku.author_name}
+        </Link>
         <button
           className={`vote-button ${hasVoted ? 'voted' : ''}`}
           onClick={() => voteMutation.mutate()}

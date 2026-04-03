@@ -17,6 +17,22 @@ module Api
         render json: { http_codes: http_codes }
       end
 
+      def haiku
+        http_code = HttpCode.find_by!(code: params[:code])
+        candidate = http_code.haikus.order(vote_count: :desc, created_at: :asc).limit(10).sample
+
+        if candidate.nil?
+          render json: { error: "No haikus found for this code" }, status: :not_found
+        else
+          render json: {
+            code: http_code.code,
+            description: http_code.description,
+            haiku: candidate.content,
+            author: candidate.author_name
+          }
+        end
+      end
+
       def show
         http_code = HttpCode.find_by!(code: params[:code])
         top_haikus = http_code.haikus.order(vote_count: :desc, created_at: :asc).limit(20)

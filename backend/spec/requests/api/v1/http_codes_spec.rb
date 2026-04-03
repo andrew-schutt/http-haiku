@@ -33,6 +33,45 @@ RSpec.describe "Api::V1::HttpCodes", type: :request do
     end
   end
 
+  describe "GET /api/v1/http_codes/:code/haiku" do
+    let(:user) { FactoryBot.create(:user) }
+    let!(:http_code) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }
+
+    it "returns a random top haiku with flat structure" do
+      http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: 10, user: user)
+
+      get "/api/v1/http_codes/404/haiku"
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      expect(json["code"]).to eq(404)
+      expect(json["description"]).to eq("Not Found")
+      expect(json["haiku"]).to be_present
+      expect(json["author"]).to be_present
+    end
+
+    it "returns 404 when no haikus exist" do
+      get "/api/v1/http_codes/404/haiku"
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "returns 404 for non-existent code" do
+      get "/api/v1/http_codes/999/haiku"
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "returns a haiku when multiple exist" do
+      3.times do |i|
+        http_code.haikus.create!(content: "An old silent pond\nA frog jumps into the pond\nSplash silence again", vote_count: i, user: user)
+      end
+
+      get "/api/v1/http_codes/404/haiku"
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json["haiku"]).to be_present
+    end
+  end
+
   describe "GET /api/v1/http_codes/:code" do
     let(:user) { FactoryBot.create(:user) }
     let!(:http_code) { HttpCode.create!(code: 404, description: "Not Found", category: "client_error") }

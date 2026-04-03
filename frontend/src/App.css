@@ -866,3 +866,95 @@
   font-size: 0.8rem;
   font-weight: 600;
 }
+
+/* Author link in haiku cards */
+.author-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s;
+}
+
+.author-link:hover {
+  color: #667eea;
+  text-decoration: underline;
+}
+
+/* User Profile Page */
+.profile-page {
+  margin-top: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-header {
+  margin: 1.5rem 0 2.5rem;
+}
+
+.profile-username {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #667eea;
+  margin: 0 0 0.75rem;
+}
+
+.profile-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #666;
+  font-size: 1rem;
+}
+
+.profile-stat strong {
+  color: #333;
+}
+
+.profile-stat-divider {
+  color: #ccc;
+}
+
+.profile-haiku-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-haiku-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: border-color 0.2s;
+}
+
+.profile-haiku-card:hover {
+  border-color: #667eea;
+}
+
+.profile-haiku-code {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #667eea;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  transition: color 0.2s;
+}
+
+.profile-haiku-code:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.profile-haiku-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.profile-haiku-votes {
+  font-weight: 500;
+}

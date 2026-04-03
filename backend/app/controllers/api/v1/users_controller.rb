@@ -2,6 +2,21 @@ class Api::V1::UsersController < ApplicationController
   before_action :require_authentication, only: [ :me ]
   before_action :throttle_registration, only: :create
 
+  def show
+    user = User.find_by!(username: params[:username])
+    haikus = user.haikus.includes(:http_code).order(vote_count: :desc)
+    total_votes = haikus.sum(:vote_count)
+
+    render json: {
+      user: user.as_json(only: [ :id, :username, :created_at ]),
+      haikus: haikus.map { |h|
+        h.as_json(only: [ :id, :content, :author_name, :vote_count, :created_at ])
+         .merge(http_code: h.http_code.as_json(only: [ :code, :description ]))
+      },
+      total_votes: total_votes
+    }
+  end
+
   def create
     user = User.new(user_params)
     if user.save

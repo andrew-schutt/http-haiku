@@ -6,6 +6,7 @@ import CodeDetailPage from './pages/CodeDetailPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import AdminPage from './pages/AdminPage';
+import UserProfilePage from './pages/UserProfilePage';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -27,6 +28,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/user/:username" element={<UserProfilePage />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

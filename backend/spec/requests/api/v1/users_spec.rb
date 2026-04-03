@@ -105,6 +105,53 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
   end
 
+  describe "GET /api/v1/users/:username" do
+    let!(:user) { FactoryBot.create(:user) }
+    let!(:http_code) { FactoryBot.create(:http_code, code: 418) }
+    let!(:haiku) { FactoryBot.create(:haiku, user: user, http_code: http_code) }
+
+    it "returns the user profile with haikus and stats" do
+      get "/api/v1/users/#{user.username}"
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json["user"]["username"]).to eq(user.username)
+      expect(json["user"]["created_at"]).to be_present
+      expect(json["user"].keys).not_to include("email", "password_digest")
+      expect(json["haikus"].length).to eq(1)
+      expect(json["haikus"][0]["content"]).to eq(haiku.content)
+      expect(json["haikus"][0]["http_code"]["code"]).to eq(418)
+      expect(json["total_votes"]).to eq(0)
+    end
+
+    it "returns haikus sorted by vote_count descending" do
+      http_code2 = FactoryBot.create(:http_code, code: 200)
+      haiku2 = FactoryBot.create(:haiku, user: user, http_code: http_code2)
+      haiku.update_columns(vote_count: 5)
+
+      get "/api/v1/users/#{user.username}"
+
+      json = JSON.parse(response.body)
+      expect(json["haikus"][0]["id"]).to eq(haiku.id)
+      expect(json["haikus"][1]["id"]).to eq(haiku2.id)
+    end
+
+    it "returns total_votes as sum of all haiku vote counts" do
+      haiku.update_columns(vote_count: 3)
+
+      get "/api/v1/users/#{user.username}"
+
+      json = JSON.parse(response.body)
+      expect(json["total_votes"]).to eq(3)
+    end
+
+    it "returns 404 for unknown username" do
+      get "/api/v1/users/doesnotexist"
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe "GET /api/v1/users/me" do
     let!(:user) { FactoryBot.create(:user) }
 

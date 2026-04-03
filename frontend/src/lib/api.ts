@@ -135,6 +135,34 @@ export const authApi = {
   },
 };
 
+export interface ProfileHaiku {
+  id: number;
+  content: string;
+  author_name: string;
+  vote_count: number;
+  created_at: string;
+  http_code: { code: number; description: string };
+}
+
+export interface UserProfile {
+  id: number;
+  username: string;
+  created_at: string;
+}
+
+export interface UserProfileResponse {
+  user: UserProfile;
+  haikus: ProfileHaiku[];
+  total_votes: number;
+}
+
+export const usersApi = {
+  getProfile: async (username: string): Promise<UserProfileResponse> => {
+    const response = await api.get(`/api/v1/users/${username}`);
+    return response.data;
+  },
+};
+
 export interface AdminHaiku {
   id: number;
   content: string;

@@ -8,7 +8,11 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
-      resources :http_codes, only: [ :index, :show ], param: :code
+      resources :http_codes, only: [ :index, :show ], param: :code do
+        member do
+          get :haiku
+        end
+      end
 
       resources :haikus, only: [ :create, :update, :destroy ] do
         collection do
@@ -21,6 +25,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [ :create ]
       get "users/me", to: "users#me", as: :current_user
+      get "users/:username", to: "users#show", as: :user_profile
       resource :session, only: [ :create, :destroy ]
 
       namespace :admin do
